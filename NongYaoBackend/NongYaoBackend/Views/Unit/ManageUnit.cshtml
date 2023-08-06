@@ -1,0 +1,501 @@
+﻿@{
+    ViewBag.Title = "农药溯源管理云平台";
+}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        
+        <link href="@Url.Content("~/Content/plugins/select2/select2_metro.css")" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("~/Content/plugins/bootstrap-toastr/toastr.min.css")" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("~/Content/plugins/data-tables/DT_bootstrap.css")" rel="stylesheet" type="text/css" />
+
+        <script src="@Url.Content("~/Content/plugins/jquery-1.10.2.min.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Content/plugins/jquery-migrate-1.2.1.min.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Content/plugins/bootstrap/js/bootstrap.min.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Content/plugins/bootstrap-hover-dropdown/twitter-bootstrap-hover-dropdown.min.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Content/plugins/jquery-slimscroll/jquery.slimscroll.min.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Content/plugins/jquery.blockui.min.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Content/plugins/jquery.cookie.min.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Content/plugins/uniform/jquery.uniform.min.js")" type="text/javascript"></script>
+
+        <script src="@Url.Content("~/Content/plugins/select2/select2.min.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Content/plugins/data-tables/jquery.dataTables.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Content/plugins/data-tables/DT_bootstrap.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Content/plugins/bootbox/bootbox.min.js")" type="text/javascript"></script>       
+        <script src="@Url.Content("~/Content/plugins/bootstrap-toastr/toastr.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Content/plugins/jquery-validation/dist/jquery.validate.min.js")" type="text/javascript"></script>
+	    <script src="@Url.Content("~/Content/plugins/jquery-validation/dist/additional-methods.min.js")" type="text/javascript"></script> 
+        <script src="@Url.Content("~/Content/scripts/app.js")" type="text/javascript"></script>
+
+	    
+    </head>
+
+    <body>
+        <div id="portlet">
+            <div class="table-toolbar">
+		        <div class="table-toolbar">
+                    <div class="btn-group" style="display:none;">
+                        <a href="#set_dialog" data-toggle="modal" class="btn default" id="addButton"><i class="fa fa-plus"></i> 添加</a>&nbsp;&nbsp;
+                    </div>
+		            <div class="btn-group pull-right">
+                     <button onclick="addUnit();" class="btn custom_button">单位追加</button>&nbsp;&nbsp;
+                     </div>                  
+
+			    </div>
+		    </div>
+       
+            <div class="portlet-body" style="display: block;">
+                <div id="table-responsive">
+                    <table class="table table-striped  table-advance table-bordered table-hover" id="tbllist">
+                        <thead>
+                            <tr>
+                                <th style="text-align:center;">编号</th>
+                                <th style="text-align:center;">单位名称</th>
+                                <!--<th style="text-align:center;">备注</th>-->
+                                <th style="width:95px; text-align:center;">操作</th>                                
+                            </tr>
+                        </thead>
+                        <tbody> 
+                          <!--  <tr>
+                                <td>abc</td>
+                                <td>cde name</td>
+                                <td>dfe</td>
+                                <td style="text-align:center;">
+                                    <a href="Edit"><img src="../../Content/img/pen.png" style="width:20px; height:20px; " /></a>&nbsp;&nbsp
+                                    <a href="Remove"><img src="../../Content/img/thresh.png"  style="width:20px; height:20px;"/></a>
+                                </td>
+                                
+                            
+                            </tr>
+                            <tr>
+                                <td>abc</td>
+                                <td>cde name</td>
+                                <td>dfe</td>
+                                <td style="text-align:center;">
+                                    <a href="Edit"><img src="../../Content/img/pen.png" style="width:20px; height:20px; " /></a>&nbsp;&nbsp
+                                    <a href="Remove"><img src="../../Content/img/thresh.png"  style="width:20px; height:20px;"/></a>
+                                </td>
+                                
+                            </tr>-->
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        
+        <!-- DIALOG PART -->
+        <div id="set_dialog" class="modal fade" tabindex="-1" data-width="400" data-backdrop="static">
+            <form action="#" id="submit_form_add" class="form-horizontal form-validate">
+			<div class="modal-dialog" style="width:500px;">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+				        <h3 id="H2">追加单位</h3> 
+					</div>
+					<div class="modal-body">
+                        
+                        <div class="form-group">
+                            <table>
+                                <tr>
+                                    <td style="vertical-align:top">
+                            <label class="control-label col-md-3" style="width:100px;" for="name">单位名称<span class="required">*</span></label>
+                                        </td>
+                                    <td width="350px;">
+                            <div class="col-md-12">
+                                <input type="text" name="name" id="name" placeholder="请输入单位名称" data-required="1" class="form-control" value=""/>
+                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                        </div>
+                        @*<div class="form-group">
+                            <table>
+                                <tr>
+                                    <td style="vertical-align:top;">
+                            <label class="control-label col-md-3" style="width:100px;" for="unit">单位标记<span class="required">*</span></label>
+                                    </td>
+                                    <td width="350px;">
+                            <div class="col-md-4">
+                                <input type="text" name="unit" id="unit1" placeholder="请输入..." data-required="1" class="form-control" value=""/>
+                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                        </div>*@
+                        <input type="hidden" name="id" id="id" />
+					<!--	<div class="row">
+							<div class="col-md-12">
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <b>
+                                                单位名称 
+                                            </b>
+                                        </td>
+                                        <td>
+                                            <input type="text" name="name" id="name" placeholder="请输入..." data-required="1" class="form-control" value=""/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <b>
+                                                单位标记
+                                            </b>
+                                        </td>
+                                        <td>
+                                            <input type="text" name="unit" placeholder="请输入..." data-required="1" class="form-control" value=""/>
+                                        </td>
+                                    </tr>
+                                    
+                                    
+                                </table>
+							</div>
+						</div>-->
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn custom_button" onclick="submit_addUnit();">保存</button>
+						<button type="button" data-dismiss="modal" id="cancelAdd" aria-hidden="true" class="btn custom_button">取消</button>
+					</div>
+				</div>
+			</div>
+           </form>
+		</div>
+        <!-- DIALOG END -->
+
+        <!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
+	    <!-- BEGIN CORE PLUGINS -->   
+	    <!--[if lt IE 9]>
+	    <script src="assets/plugins/respond.min.js"></script>
+	    <script src="assets/plugins/excanvas.min.js"></script> 
+	    <![endif]-->   
+        
+        
+	    <!-- END CORE PLUGINS -->
+
+	    <script>
+
+	        $(document).ready(function () {
+	            $(".menutable").removeClass("active");
+	            $("#unit").addClass("active");
+	            $("#subtitle").html("单位管理");
+	        });
+
+
+	        var oTable;
+	        var handleDataTable = function () {
+	            if (!jQuery().dataTable) {
+	                return;
+	            }
+
+	            // begin first table
+	            oTable = $('#tbllist').dataTable({
+	                "bServerSide": true,
+	                "bProcessing": true,
+	                "sAjaxSource": "@Url.Content("~/Unit/RetrieveUnitList")",
+	                "aoColumns": [
+                      { "bSortable": false },
+                      { "bSortable": false },
+                      { "bSortable": false }
+	                ],
+	                "aLengthMenu": [
+                        [10, 20, 50, -1],
+                        [10, 20, 50, "All"] // change per page values here
+	                ],
+	                // set the initial value
+	                "iDisplayLength": 10,
+	                "bFilter": false,
+	                "bLengthChange": false,
+	                "sPaginationType": "bootstrap",
+	                "oLanguage": {
+	                    "sProcessing": "处理中...",
+	                    "sLengthMenu": "_MENU_ 记录",
+	                    "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+	                    "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+	                    "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+	                    "sZeroRecords": "没有搜索结果",
+	                    "oPaginate": {
+	                        "sFirst": "首页",
+	                        "sPrevious": "上页",
+	                        "sNext": "下页",
+	                        "sLast": "末页"
+	                    },
+	                    "sSearch": "搜索:"
+	                },
+	                "aoColumnDefs": [{
+	                    aTargets: [2],    // Column number which needs to be modified
+	                    fnRender: function (o, v) {   // o, v contains the object and value for the column
+	                        //var rhtml = '<a href="' + rootUri + 'AppPatch/Edit/' + o.aData[3] + '" class="btn default btn-xs default"><i class="fa fa-edit"></i> 编辑</a>&nbsp;' +
+                              //  '<a href="javascript:void(0);" class="btn default btn-xs default" onclick="return deleteApp(' + o.aData[3] + ');"><i class="fa fa-trash-o"></i> 删除</a>';
+	                        var rhtml = '<a href="javascript:void(0)" onclick="return updateUnit(\'' + o.aData[2] + '\',\'' + o.aData[1] + '\');"><img src="../../Content/img/pen.png" style="width:20px; height:20px; " /></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp<a href="#" onclick="return deleteUnit(\'' + o.aData[2] + '\');"><img src="../../Content/img/thresh.png"  style="width:20px; height:20px;"/></a>';	                      
+	                        return rhtml;
+	                    },
+	                    sClass: 'tableCell'    // Optional - class to be applied to this table cell
+	                }
+	                ]
+	            });
+	        }
+
+	        jQuery(document).ready(function () {
+	            // initiate layout and plugins
+	            App.init();
+	            handleDataTable();
+	            var form_addtype = $('#submit_form_add');
+	            error = $('.alert-danger', form_addtype);
+	            success = $('.alert-success', form_addtype);
+
+	            $.validator.messages.required = "必须要填写";
+	            $.validator.messages.remote = "请输入正确的"
+	            $.validator.messages.email = "请输入Email格式"
+	            $.validator.messages.url = "请输入URL格式"
+	            $.validator.messages.date = "请输入日期"
+	            $.validator.messages.dateISO = "请输入日期ISO"
+	            $.validator.messages.number = "请输入数字"
+	            $.validator.messages.digits = "请输入数字"
+	            $.validator.messages.creditcard = "请输入信用卡格式"
+	            $.validator.messages.equalTo = "确认密码不同"
+	            $.validator.messages.maxlength = $.validator.format("输入的文字数量超过(十个)了");
+	            $.validator.messages.minlength = $.validator.format("输入的文字数量太少");
+	            $.validator.messages.rangelength = $.validator.format("输入的文字数量没在范围");
+	            $.validator.messages.range = $.validator.format("输入的数值没在范围");
+	            $.validator.messages.max = $.validator.format("输入的数值超过了");
+	            $.validator.messages.min = $.validator.format("输入的数值太少");
+
+	            form_addtype.validate({
+	                doNotHideMessage: true, //this option enables to show the error/success messages on tab switch.
+	                errorElement: 'span', //default input error message container
+	                errorClass: 'help-block', // default input error message class
+	                focusInvalid: false, // do not focus the last invalid input
+	                rules: {
+	                    name: {
+	                        required: true,
+	                        minlength: 1,
+	                        maxlength: 10
+	                    },
+	                    unit: {
+	                        required: true,
+	                        minlength: 1,
+                            maxlength: 10
+	                    },
+	                },
+
+	                errorPlacement: function (error, element) { // render error placement for each input type
+	                    if (element.attr("name") == "gender") { // for uniform radio buttons, insert the after the given container
+	                        error.insertAfter("#form_gender_error");
+	                    } else if (element.attr("name") == "payment[]") { // for uniform radio buttons, insert the after the given container
+	                        error.insertAfter("#form_payment_error");
+	                    } else {
+	                        error.insertAfter(element); // for other inputs, just perform default behavior
+	                    }
+	                },
+
+	                invalidHandler: function (event, validator) { //display error alert on form submit   
+	                    success.hide();
+	                    error.show();
+	                    App.scrollTo(error, -200);
+	                },
+
+	                highlight: function (element) { // hightlight error inputs
+	                    $(element)
+                            .closest('.form-group').removeClass('has-success').addClass('has-error'); // set error class to the control group
+	                },
+
+	                unhighlight: function (element) { // revert the change done by hightlight
+	                    $(element)
+                            .closest('.form-group').removeClass('has-error'); // set error class to the control group
+	                },
+
+	                success: function (label) {
+	                    if (label.attr("for") == "gender" || label.attr("for") == "payment[]") { // for checkboxes and radio buttons, no need to show OK icon
+	                        label
+                                .closest('.form-group').removeClass('has-error').addClass('has-success');
+	                        label.remove(); // remove error label here
+	                    } else { // display success icon for other inputs
+	                        label
+                                .addClass('valid') // mark the current input as valid and display OK icon
+                            .closest('.form-group').removeClass('has-error').addClass('has-success'); // set success class to the control group
+	                    }
+	                },
+
+	                submitHandler: function (form) {
+	                    success.show();
+	                    error.hide();
+	                    //add here some ajax code to submit your form or just call form.submit() if you want to submit the form without ajax
+	                }
+
+	            });
+	        });
+
+	        function redirectToListPage(status) {
+	            if (status.indexOf("error") != -1) {
+	            } else {
+	                refreshTable();
+	            }
+            }
+            function refreshTable() {
+                oSettings = oTable.fnSettings();
+
+                //Retrieve the new data with $.getJSON. You could use it ajax too
+                $.getJSON(oSettings.sAjaxSource, null, function (json) {
+                    // oTable.fnClearTable(this);
+
+                    for (var i = 0; i < json.aaData.length; i++) {
+                        oTable.oApi._fnAddData(oSettings, json.aaData[i]);
+                    }
+
+                    oSettings.aiDisplay = oSettings.aiDisplayMaster.slice();
+                    oTable.fnDraw();
+                });
+            }
+
+            function submit_addUnit() {
+                if ($('#submit_form_add').valid()) {
+                    if ($('#name').val() == "箱") {
+                        alert('不能使用 "箱"');
+                        return;
+                    }
+
+                    $("#cancelAdd").trigger("click");
+
+                    $.ajax({
+                        async: false,
+                        type: "POST",
+                        url: "@Url.Content("~/Unit/SubmitUnit")",
+                        dataType: "json",
+                        data: $('#submit_form_add').serialize(),
+                        success: function (data) {
+                            if (data == "") {
+                                toastr.options = {
+                                    "closeButton": false,
+                                    "debug": true,
+                                    "positionClass": "toast-top-center",
+                                    "onclick": null,
+                                    "showDuration": "3",
+                                    "hideDuration": "3",
+                                    "timeOut": "1500",
+                                    "extendedTimeOut": "1000",
+                                    "showEasing": "swing",
+                                    "hideEasing": "linear",
+                                    "showMethod": "fadeIn",
+                                    "hideMethod": "fadeOut"
+                                };
+                                toastr["success"]("操作成功!", "恭喜您");                               
+                            } else {
+                                toastr.options = {
+                                    "closeButton": false,
+                                    "debug": true,
+                                    "positionClass": "toast-top-center",
+                                    "onclick": null,
+                                    "showDuration": "3",
+                                    "hideDuration": "3",
+                                    "timeOut": "1500",
+                                    "extendedTimeOut": "1000",
+                                    "showEasing": "swing",
+                                    "hideEasing": "linear",
+                                    "showMethod": "fadeIn",
+                                    "hideMethod": "fadeOut"
+                                };
+                                toastr["error"](data, "温馨敬告");
+
+                            }
+                        },
+                        error: function (data) {
+                            alert("Error: " + data.status);
+                            $('.loading-btn').button('reset');
+                        }
+                    });
+                }
+            }
+
+	        function addUnit() {	            
+                $("#name").val("");
+                $("#id").val("");
+                $(".has-error").removeClass("has-error");
+                $(".has-success").removeClass("has-success");
+                $(".help-block").remove();
+                $("#H2").html("追加单位");
+                $("#addButton").trigger("click");
+            }
+
+            function updateUnit(id, name) {
+                     $(".has-error").removeClass("has-error");
+                     $(".has-success").removeClass("has-success");
+                     $(".help-block").remove();
+                    $("#name").val(name);
+                    $("#id").val(id);
+                    $("#H2").html("修改单位");
+                    $("#addButton").trigger("click");
+                
+            }
+
+            function deleteUnit(id) {
+                    bootbox.dialog({
+                        message: "您确定要删除单位吗？",
+                        buttons: {
+                            
+                            main: {
+                                label: "确定",
+                                className: "btn-primary custom_button",
+                                callback: function () {
+                                    $.ajax({
+                                        url: "@Url.Content("~/Unit/DeleteUnit")",
+                                        data: {
+                                            "id": id
+                                        },
+                                        type: "post",
+                                        success: function (message) {
+                                            if (message == true) {
+                                                toastr.options = {
+                                                    "closeButton": false,
+                                                    "debug": true,
+                                                    "positionClass": "toast-top-center",
+                                                    "onclick": null,
+                                                    "showDuration": "3",
+                                                    "hideDuration": "3",
+                                                    "timeOut": "1500",
+                                                    "extendedTimeOut": "1000",
+                                                    "showEasing": "swing",
+                                                    "hideEasing": "linear",
+                                                    "showMethod": "fadeIn",
+                                                    "hideMethod": "fadeOut"
+                                                };
+                                                toastr["success"]("删除成功！", "恭喜您");
+                                            } else {
+                                                toastr.options = {
+                                                    "closeButton": false,
+                                                    "debug": true,
+                                                    "positionClass": "toast-top-center",
+                                                    "onclick": null,
+                                                    "showDuration": "3",
+                                                    "hideDuration": "3",
+                                                    "timeOut": "1500",
+                                                    "extendedTimeOut": "1000",
+                                                    "showEasing": "swing",
+                                                    "hideEasing": "linear",
+                                                    "showMethod": "fadeIn",
+                                                    "hideMethod": "fadeOut"
+                                                };
+                                                toastr["error"]("删除失败", "温馨敬告");
+                                            }
+                                        }
+                                    });
+                                }
+                            },
+                            danger: {
+                                label: "取消",
+                                className: "btn-danger custom_button",
+                                callback: function () {
+                                    return true;
+                                }
+                            }
+                        }
+                    });                
+            }
+	      
+	    </script>
+	    <!-- END JAVASCRIPTS -->   
+    </body>
+</html>
+

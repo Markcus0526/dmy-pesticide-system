@@ -1,0 +1,263 @@
+/* here you can put your own css to customize and override the theme */
+
+
+.login-back {
+    width:735px;
+    background-image: url(/Content/img/login_back.png);
+    background-repeat:no-repeat;
+}
+
+.login-table {
+	width:680px;
+	text-align:center;
+}
+
+.alert-radius {
+	border-radius:10px;
+}
+
+.input-icon .login-i {
+	margin:1px 1px 1px 1px !important;
+	height:36px !important;
+}
+.userback {
+	width:71px !important;
+	background-image:url(/Content/img/input_user.png);
+}
+.passback {
+	width:71px !important;
+	background-image:url(/Content/img/input_password.png);
+}
+.validback {
+	width:35px !important;
+	background-image:url(/Content/img/input_valid.png);
+}
+
+.input-icon .login-input {
+	width:300px;
+	height:38px;
+	padding-left:76px !important;
+	border-radius:5px !important;
+    border-color:black;
+}
+.input-icon .login-valid {
+	width:150px;
+	padding-left:39px !important;
+}
+
+.form-group .register-button {
+	width:94px;
+	height:39px;
+	color:white;
+	font-size:20px;
+	background-image:url(/Content/img/btn_register.png);
+}
+.form-group .loginbtnback {
+	background-image:url(/Content/img/btn_login.png);	
+}
+
+input[type='text'] {
+	padding-top:5px;
+}
+
+input[type='password'] {
+	padding-top:5px;
+}
+
+textarea {
+	padding-left:3px;
+}
+
+select {
+	padding-left:3px;
+}
+
+.adjust-left {
+	padding-left:3px;
+}
+
+.headerback
+{
+    width:1024px;
+    height:169px;
+    background-image: url('../img/header_back.png');
+    
+}
+
+.headerback td
+{
+    vertical-align: bottom;
+    padding-left: 0px;
+    padding-bottom: 0px;
+    margin: 0;
+}
+
+.subheaderback
+{
+    width:1024px;
+    height:52px;
+    background-image: url('../img/subtitle_back.png');
+}
+
+.subheaderback h4
+{
+    padding-left:20px;
+    color:#fff;
+}
+
+.menutable
+{
+    width: 630px;
+    height: 37px;
+}
+
+.menutable td
+{
+    width:105px;
+    background-image:url('../img/tab_back.png');
+    text-align:center;
+    padding: 0;
+    height: 37px;
+    vertical-align:central;
+}
+
+.menutable td:hover
+{
+    background-image:url('../img/tab_backsel.png');
+    height: 37px;
+    text-align:center;
+}
+
+.menutable .active
+{
+    background-image:url('../img/tab_backsel.png');
+    text-align:center;
+}
+
+.menutable a {
+    text-align:center;
+    font-weight: bold;
+    text-decoration: none;
+    text-shadow: 3px 3px 2px #fff;
+    line-height: 2.8em;
+    color: #ffffff;
+}
+
+.menutable a:hover {
+    text-decoration: none;
+    color:white;
+}
+
+.menutable a:active {
+    text-decoration: none;
+}
+
+
+.menutable td a div
+{
+    width:105px;
+    height: 37px;
+    display:inline-block;
+}
+
+
+.custom_button, .custom_button:focus
+{
+    width: 75px;
+    height: 35px;
+    color: #fff;
+    background-image:url('../img/button_back.png');
+    padding: 0;
+    text-align:center;
+}
+
+
+.custom_button:hover
+{
+    width: 75px;
+    height: 35px;
+    color: #666;
+    background-image:url('../img/button_back.png');
+    padding: 0;
+    text-align:center;
+}
+
+.custom_button:active
+{
+    width: 75px;
+    height: 35px;
+    color: #000;
+    background-image:url('../img/button_back.png');
+    padding: 0;
+    text-align:center;
+}
+
+.logoutdiv
+{
+    padding-bottom: 10px;
+    padding-top: 0px;
+    margin: 0;
+    text-align:center;
+    float:right;
+    display:block;
+}
+
+.logout_text
+{
+    padding: 0;
+    margin: 0;
+    color: #fff;
+}
+
+.logout_text a {
+    text-align:center;
+    font-weight: bold;
+    text-decoration: none;
+    color: #ffffff;
+}
+
+.logout_text a:hover {
+    color:#888;
+}
+
+.logout_text a:active {
+    text-decoration: none;
+}
+
+
+.btn.btn-upload {
+	color: white;
+	border: 0;
+	background:  url("../img/upload-button.png");	
+	width:150px;
+	height: 32px;
+}
+
+.btn.btn-upload:hover {
+	color: #666;
+	border: 0;
+	background:  url("../img/upload-button.png");	
+	width:150px;
+	height: 32px;
+}
+
+.btn.btn-upload:active {
+	color: #000;
+	border: 0;
+	background:  url("../img/upload-button.png");	
+	width:150px;
+	height: 32px;
+}
+
+.consider-table td{
+    vertical-align:top;
+}
+
+.consider-table .label-td{
+    padding-top:10px;
+    width:120px;
+}
+
+.consider-table input {
+    width:370px;
+}

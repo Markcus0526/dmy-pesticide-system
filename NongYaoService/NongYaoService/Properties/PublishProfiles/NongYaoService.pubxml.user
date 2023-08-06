@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit http://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <LastUsedBuildConfiguration>Release</LastUsedBuildConfiguration>
+    <LastUsedPlatform>Any CPU</LastUsedPlatform>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+  </PropertyGroup>
+  <ItemGroup>
+    <File Include="bin/ICSharpCode.SharpZipLib.dll">
+      <publishTime>09/03/2014 17:51:12</publishTime>
+    </File>
+    <File Include="bin/Newtonsoft.Json.dll">
+      <publishTime>09/03/2014 17:51:12</publishTime>
+    </File>
+    <File Include="bin/NongYaoService.dll">
+      <publishTime>09/26/2014 15:11:25</publishTime>
+    </File>
+    <File Include="bin/System.Net.Http.dll">
+      <publishTime>08/19/2014 23:33:35</publishTime>
+    </File>
+    <File Include="bin/System.Net.Http.Formatting.dll">
+      <publishTime>08/19/2014 23:33:35</publishTime>
+    </File>
+    <File Include="bin/System.Net.Http.WebRequest.dll">
+      <publishTime>08/19/2014 23:33:36</publishTime>
+    </File>
+    <File Include="bin/System.Web.Http.dll">
+      <publishTime>08/19/2014 23:33:35</publishTime>
+    </File>
+    <File Include="bin/System.Web.Http.WebHost.dll">
+      <publishTime>08/19/2014 23:33:35</publishTime>
+    </File>
+    <File Include="Json/Newtonsoft.Json.dll">
+      <publishTime>09/03/2014 17:51:12</publishTime>
+    </File>
+    <File Include="Lib/ICSharpCode.SharpZipLib.dll">
+      <publishTime>09/03/2014 17:51:12</publishTime>
+    </File>
+    <File Include="packages.config">
+      <publishTime>08/19/2014 23:33:34</publishTime>
+    </File>
+    <File Include="Service.svc">
+      <publishTime>05/14/2014 09:01:38</publishTime>
+    </File>
+    <File Include="ServiceModel/ServiceDB.dbml">
+      <publishTime>09/26/2014 15:05:45</publishTime>
+    </File>
+    <File Include="Web.config">
+      <publishTime>08/19/2014 23:33:34</publishTime>
+    </File>
+  </ItemGroup>
+</Project>

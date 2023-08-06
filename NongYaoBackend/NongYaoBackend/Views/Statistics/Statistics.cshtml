@@ -1,0 +1,857 @@
+﻿@using NongYaoBackend.Models;
+@{
+    ViewBag.Title = "农药溯源管理云平台";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>统计</title>
+                
+        @*<link href="@Url.Content("~/Content/plugins/select2/select2_metro.css")" rel="stylesheet" type="text/css" />*@
+        <link href="@Url.Content("~/Content/plugins/bootstrap-toastr/toastr.min.css")" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("~/Content/plugins/data-tables/DT_bootstrap.css")" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("~/Content/plugins/bootstrap-datepicker/css/datepicker.css")" rel="stylesheet" type="text/css"/>
+        <link href="@Url.Content("~/Content/plugins/bootstrap-modal/css/bootstrap-modal-bs3patch.css")" rel="stylesheet" type="text/css"/>
+        <link href="@Url.Content("~/Content/plugins/bootstrap-modal/css/bootstrap-modal.css")" rel="stylesheet" type="text/css"/>
+        
+        <link href="@Url.Content("~/Content/plugins/Kendo_jQuery/source/styles/kendo.common.css")" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("~/Content/plugins/Kendo_jQuery/source/styles/kendo.kendo.css")" rel="stylesheet" type="text/css" /> 
+
+
+        
+        <script src="@Url.Content("~/Content/plugins/jquery-1.10.2.min.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Content/plugins/jquery-migrate-1.2.1.min.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Content/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js")" type="text/javascript"></script>
+        
+        <script src="@Url.Content("~/Content/plugins/bootstrap-hover-dropdown/twitter-bootstrap-hover-dropdown.min.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Content/plugins/jquery-slimscroll/jquery.slimscroll.min.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Content/plugins/jquery.blockui.min.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Content/plugins/jquery.cookie.min.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Content/plugins/uniform/jquery.uniform.min.js")" type="text/javascript"></script>
+
+        <script src="@Url.Content("~/Content/plugins/data-tables/jquery.dataTables.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Content/plugins/data-tables/DT_bootstrap.js")" type="text/javascript"></script>
+        
+
+        <script src="@Url.Content("~/Content/plugins/bootstrap/bootstrap.min.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Content/plugins/bootbox/bootbox.min.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Content/plugins/bootstrap-toastr/toastr.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Content/plugins/jquery-validation/dist/jquery.validate.min.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Content/plugins/bootstrap-modal/js/bootstrap-modal.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Content/plugins/bootstrap-modal/js/bootstrap-modalmanager.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Content/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Content/plugins/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js")" type="text/javascript"></script>
+        @*<script src="@Url.Content("~/Content/plugins/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js")" type="text/javascript"></script>*@
+
+        <script src="@Url.Content("~/Content/scripts/app.js")" type="text/javascript"></script>
+        
+        <!-- for kendo use -->
+        @*<script src="@Url.Content("~/Content/plugins/Kendo_jQuery/js/jquery.js")" type="text/javascript"></script> *@
+        <script src="@Url.Content("~/Content/plugins/Kendo_jQuery/source/js/kendo.core.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Content/plugins/Kendo_jQuery/source/js/kendo.data.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Content/plugins/Kendo_jQuery/source/js/kendo.chart.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Content/plugins/Kendo_jQuery/source/js/kendo.draganddrop.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Content/plugins/Kendo_jQuery/source/js/kendo.slider.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Content/plugins/Kendo_jQuery/js/cultures/kendo.culture.zh-CN.js")" type="text/javascript"></script> 
+        <!-- end kendo js-->
+
+    </head>
+    <body>
+        <div id="portlet">
+            <div class="table-toolbar">
+		        <table class="table table-striped" style="height:300px">
+                    <tr>
+                        <td style="width:35%">
+                            <div id="yearly_div" style="border:1px solid black; width:100%;height:380px;">
+                                <table class="table table-striped" style="margin-top:50px;">
+                                    <tr>
+                                        <td style="text-align:center"><b>农药汇总分析</b></td>
+                                    </tr>
+                                </table>
+                                <table class="table table-striped" >
+                                    <tr>
+                                        <td>
+                                            <b>汇总时间：</b>
+                                        </td>
+                                        <td>
+                                            <select size="1" id="year" name="year" aria-controls="" onchange="changeYear();" style="width:100px">
+                                                @{
+                                                    List<int> year_list = ViewBag.years;
+                                                    for (var i = 0; i < year_list.Count(); i++)
+                                                    {
+                                                        <option value="@year_list[i]">@year_list[i]</option>
+                                                    }
+                                                }
+                                            </select>
+                                            <b>年</b>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <b>农药总库存量：</b>
+                                        </td>
+                                        <td>
+                                            <input type="text" id="allRemainCount" style="width:120px" disabled />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <b>农药总量：</b>
+                                        </td>
+                                        <td>
+                                            <input type="text" id="allNongCount" style="width:120px" disabled />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <b>农药总销售量：</b>
+                                        </td>
+                                        <td>
+                                            <input type="text" id="allSaleCount" style="width:120px" disabled/>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <table class="table table-striped">
+                                    <tr>
+                                        @*<a class="btn custom_button" href="@Url.Content("~/Statistics/Detail")" >分类查询</a>*@
+                                        <td style="text-align:center"><input type="button" class="btn custom_button" id="detail" value="分类查询" onclick="show_statistics_detail();"/></td>
+                                        <td style="text-align:center"><input type="button" class="btn custom_button" id="show" value="显示" /></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </td>
+                        <td style="width:65%">
+                            <div id="pillar_div" style="border:1px solid black; width:100%;height:380px;">
+                                <table class="table table-striped">
+                                    <tr>
+                                        <td style="text-align:center"><b>区域农药汇总柱状图</b></td>
+                                    </tr>
+                                </table>
+                                <div id="pillar-responsive">
+                                    <div id="pillarChart" style="width:90%; height:300px; margin: 0 auto;"></div>
+                                </div>
+                                <div id="slider_part" style="display:none">
+                                    @*<input type="range" id="Slider" style="width:100px; margin:0 40px;" />*@
+                                    <div id="Slider" style="width:530px; margin:0 30px;"></div>
+                                </div>
+
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <table class="table table-striped" style="height:300px">
+                    <tr>
+                        <td style="width:60%">
+                            <div id="line_div" style="border:1px solid black; width:100%;height:350px;">
+                                <table class="table table-striped">
+                                    <tr>
+                                        <td style="text-align:center"><b>农药销量与时间关系折线图</b></td>
+                                    </tr>
+                                </table>
+                                <div id="cycle-responsive">
+                                    <div id="lineChart" style="width:500px; height:300px;margin: 0 auto;"></div>
+                                </div>
+            
+                            </div>
+                        </td>
+                        <td style="width:40%">
+                            <div id="circle_div" style="border:1px solid black; width:100%;height:350px;">
+                                <table class="table table-striped">
+                                    <tr>
+                                        <td style="text-align:center"><b>农药销量汇总饼状图</b></td>
+                                    </tr>
+                                </table>
+                                <div id="line-responsive">
+                                    <div id="pieChart" style="width:90%; height:300px;margin: 0 auto;"></div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+             </div>
+        </div>
+
+        <div id="DetailStaticDialog" class="modal fade" tabindex="-1" data-width="1000px" data-height="360px" data-backdrop="static">
+            <form action="#" id="submit_form" class="form-horizontal form-validate">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <table class="table table-striped">
+                            <tr>
+                                
+                                <td style="width:130px;text-align:right">
+                                    <b class="calendar">开始日期:</b>
+                                </td>
+                                <td style="width:170px;">
+                                     <input type=text name="detail_nongyao_start_date" class="date_input" id="detail_nongyao_start_date" data-date-format='yyyy-mm-dd' value="@Convert.ToString(ViewBag.Year)-@String.Format("{0:00}", ViewBag.Month)-@String.Format("{0:00}", ViewBag.Day)" style="margin-right: 5px;" onchange="detail_nongyao_startdate_change();"/>
+			                    </td>
+                                <td style="width:130px;text-align:right">
+                                    <b class="calendar">结束日期:</b>
+                                </td>
+                                <td style="width:170px;">
+                                    <input type=text name="detail_nongyao_end_date" class="date_input" id="detail_nongyao_end_date" data-date-format='yyyy-mm-dd' value="@String.Format("{0:yyyy-MM-dd}",DateTime.Now)" style="margin-right: 5px;" onchange="detail_nongyao_enddate_change();"/>
+                                </td>                        
+                        
+                            </tr>
+                    
+		                </table>
+                        <table class="table table-striped">
+                            <tr>
+                                <td style="width:180px;text-align:right">
+                                    <b>农药类别:</b>
+                                </td>
+                                <td style="text-align:center">
+                                    <select size="1" id="detail_nongyaoType" name="detail_nongyaoType" style="width:80px;" onchange="changeDetailNongyaoType();">
+                                        <option value="0">&nbsp;&nbsp;全部</option>
+                                        @{ 
+                                            List<tbl_nongyao> nongyaos = ViewBag.nongyaos;
+                                            for (int i = 0; i < nongyaos.Count; i ++ ) {
+                                                tbl_nongyao item = nongyaos.ElementAt(i);
+	                                            <option value="@item.id">&nbsp;&nbsp;@item.name</option>
+                                            }
+                                        }
+                                    </select>
+                                </td>
+                                <td style="text-align:center">
+                                    <b>农药通用名:</b>
+                                    <input type="text" id="detail_nongyao_pinyin" placeholder="经营许可证代码\拼音简码" />
+                                    
+                                    <input type="button" class="btn custom_button" id="search_detail_nongyao" onclick="search_detail_nongyao_func();" value="查询" />
+                                    <select size="1" id="detail_nongyao_select" name="detail_nongyao_select" style="width:80px;" onchange="selectdetail_nongyao();">
+                                    </select>
+                                </td>
+                           </tr>
+                        </table>
+                    </div>
+
+                    <div class="modal-body">
+                        <div id="pillar-responsive-detail">
+                            <div id="detailPillarChart" style="width:90%; height:300px; margin: 0 auto;"></div>
+                        </div>
+                        <div id="detail_slider_part" style="display:none; text-align:center;">
+                            <input type="range" id="detail_Slider" style="width:860px; margin:0 50px;" />
+                            @*<div id="detail_Slider" style="width:92%; margin:0 40px;"></div>*@
+                        </div>
+                    </div>
+
+                
+                    <div class="modal-hidden" style="display: none">
+                        <a id="real_act_static" class="btn white" data-target="#DetailStaticDialog" data-toggle="modal"></a>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn custom_button" data-dismiss="modal" aria-hidden="true" onclick="cancelDetail();">返回</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <script>
+            var Slider;
+            var detailSlider;
+            $(document).ready(function () {
+                $("#year").val(@ViewBag.year);
+                setYearCount();
+                createPillarChart();
+                createLineChart();
+                createPieChart();
+            });
+            function setYearCount() {
+                $.ajax({
+                    url: "@Url.Content("~/Statistics/getYearValue/")",
+                    data: {
+                        year: $("#year").val()
+                    },
+                    success: function (data) {
+                        var yearCount_val = data.yearCount;
+                        $("#allRemainCount").val(Math.round(yearCount_val.remainQuantity*10)/10+"Kg");
+                        $("#allNongCount").val(Math.round(yearCount_val.allQuantity * 10) / 10 + "Kg");
+                        $("#allSaleCount").val(Math.round(yearCount_val.saleQuantity * 10) / 10 + "Kg");
+                    }
+                });
+            }
+            function changeYear() {
+                setYearCount();
+                //refreshPillar();
+                createPillarChart();
+                createLineChart();
+                createPieChart();
+            }
+            
+            function createPillarChart() {
+                if("@ViewBag.DistrictCount" > 10)
+                {
+                    createSlider("@ViewBag.DistrictCount");
+                }
+                $("#pillarChart").kendoChart({
+                    theme: $(document).data("kendoSkin") || "kendo",
+                    title: {
+                        //text: title
+                    },
+                    dataSource: {
+                        transport: {
+                            read: {
+                                url: "@Url.Content("~/Statistics/GetAreaSaleCount")",
+                                data: {
+                                        year:$("#year").val()
+                                    },
+                                    dataType: "json"
+                                }
+                            },
+                        sort: {
+                        }
+                    },
+                    legend: {
+                        position: "bottom"
+                    },
+                    seriesDefaults: {
+                        type: "column",
+                        stack: true,
+                    },
+                    series: [{
+                        field: "saleCount",
+                        labels: {
+                            visible: true,
+                            format: "{0}"
+                        },
+                        name: "销售数量(Kg)"
+                    }, {
+                        field: "remainCount",
+                        color:"blue",
+                        labels: {
+                            visible: true,
+                            format: "{0}",
+                        },
+                        name: "库存数量(Kg)"
+                    }],
+                    valueAxis: {
+                        labels: {
+                            format: "{0}",
+                        }
+                    },
+                    categoryAxis: {
+                        field: "area",
+                        labels: {
+                            rotation: 45,
+                        }
+                    },
+                    tooltip: {
+                        visible: true,
+                        format: "{0}"
+                    }
+                });
+
+            }
+            function createDetailPillarChart() {
+                if ("@ViewBag.DistrictCount" > 10) {
+                    createDetailSlider("@ViewBag.DistrictCount");
+                }
+                $("#detailPillarChart").kendoChart({
+                    theme: $(document).data("kendoSkin") || "kendo",
+                    title: {
+                        //text: title
+                    },
+                    dataSource: {
+                        transport: {
+                            read: {
+                                url: "@Url.Content("~/Statistics/GetDetailAreaSaleCount")",
+                                data: {
+                                },
+                                dataType: "json"
+                            }
+                        },
+                        sort: {
+                        }
+                    },
+                    legend: {
+                        position: "bottom"
+                    },
+                    seriesDefaults: {
+                        type: "column",
+                        stack: true,
+                    },
+                    series: [{
+                        field: "saleCount",
+                        labels: {
+                            visible: true,
+                            format: "{0}"
+                        },
+                        name: "销售数量"
+                    }, {
+                        field: "remainCount",
+                        color: "blue",
+                        labels: {
+                            visible: true,
+                            format: "{0}",
+                        },
+                        name: "库存数量"
+                    }],
+                    valueAxis: {
+                        labels: {
+                            format: "{0}",
+                        }
+                    },
+                    categoryAxis: {
+                        field: "area",
+                        labels: {
+                            rotation: 45,
+                        }
+                    },
+                    tooltip: {
+                        visible: true,
+                        format: "{0}"
+                    }
+                });
+
+            }
+
+            function createPieChart() {
+                $("#pieChart").kendoChart({
+                    theme: $(document).data("kendoSkin") || "kendo",
+                    legend: {
+                        visible: false,
+                        position: "bottom"
+                    },
+                    dataSource: {
+                        transport: {
+                            read: {
+                                url: "@Url.Content("~/Statistics/GetTypeSaleCount")",
+                                data: {
+                                    year: $("#year").val()
+                                },
+                                dataType: "json"
+                            }
+                        },
+                        sort: {
+                        }
+                    },
+                    series: [{
+                        type: "pie",
+                        field: "saleCount",
+                        categoryField: "type",
+                        startAngle: 160,
+                        labels: {
+                            visible: 1,
+                            template: "${ category }  ${ value }"
+                        }
+                    }],
+                    tooltip: {
+                        visible: true,
+                        template: "${ category }  ${ value }"
+                    },
+                });
+            }
+
+            function createLineChart() {
+                
+                $("#lineChart").kendoChart({
+                    theme: $(document).data("kendoSkin") || "kendo",
+                    dataSource: {
+                        transport: {
+                            read: {
+                                url: "@Url.Content("~/Statistics/GetMonthSaleCount")",
+                                data: {
+                                    year:$("#year").val()
+                                },
+                                dataType: "json"
+                            }
+                        },
+                        sort: {
+                        }
+                    },
+                    title: {
+ 
+                    },
+                    legend: {
+                        position: "bottom"
+                    },
+                    seriesDefaults: {
+                        type: "line",
+                        labels: {
+                            visible: true,
+                            format: "{0}"
+                        }
+                    },
+                    series: [{
+                        field: "saleCount",
+                        name: "销售数量"
+                    }],
+                    valueAxis: {
+                        labels: {
+                            format: "{0}"
+                        }
+                    },
+                    categoryAxis: {
+                        field: "Month",
+                        labels: {
+                            rotation: 45,
+                        }
+                    }
+                });
+            }
+            function refreshDetailPillar() {
+                var chart = $("#detailPillarChart").data("kendoChart");
+                chart.refresh();
+            }
+            
+            function refreshPillar() {
+                $("#pillarChart").kendoChart({
+                    theme: $(document).data("kendoSkin") || "kendo",
+                    title: {
+                        //text: title
+                    },
+                    dataSource: {
+                        transport: {
+                            read: {
+                                url: "@Url.Content("~/Statistics/re_GetAreaSaleCount")",
+                                data: {
+                                    year: $("#year").val(),
+                                    cur_val: 0
+                                },
+                                dataType: "json"
+                            }
+                        },
+                        sort: {
+                        }
+                    },
+                    legend: {
+                        position: "bottom"
+                    },
+                    seriesDefaults: {
+                            type: "column",
+                            stack: true,
+                            },
+                    series: [{
+                        field: "saleCount",
+                        labels: {
+                            visible: true,
+                            format: "{0}"
+                        },
+                        name: "销售数量"
+                    }, {
+                        field: "remainCount",
+                        color: "blue",
+                        labels: {
+                            visible: true,
+                            format: "{0}",
+                        },
+                        name: "库存数量"
+                    }],
+                    valueAxis: {
+                        labels: {
+                                format: "{0}",
+                                }
+                    },
+                    categoryAxis: {
+                            field: "area",
+                            labels: {
+                            rotation: 45,
+                            }
+                    },
+                    tooltip: {
+                            visible: true,
+                            format: "{0}"
+                    }
+                });
+            }
+            function show_statistics_detail() {
+                $("#detail_nongyao_start_date").datepicker({
+                    todayBtn: true
+                });
+                $("#detail_nongyao_end_date").datepicker({
+                    todayBtn: true
+                });
+                
+                $("#real_act_static").trigger("click");
+                createDetailPillarChart();
+            }
+            
+            function detail_nongyao_startdate_change() {
+                if ($("#detail_nongyao_start_date").val() > $("#detail_nongyao_end_date").val()) {
+                    toastr.options = {
+                        "closeButton": false,
+                        "debug": true,
+                        "positionClass": "toast-top-center",
+                        "onclick": null,
+                        "showDuration": "3",
+                        "hideDuration": "3",
+                        "timeOut": "2500",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    };
+                    toastr["error"]("日期错误，开始日期要提前结束日期", "温馨敬告");
+                }
+                $.ajax({
+                    url: "@Url.Content("~/Statistics/detailNongyaoStartDateChange/")",
+                    data: {
+                        startDate: $("#detail_nongyao_start_date").val()
+                    },
+                    success: function (data) {
+                        refreshDetailPillar();
+                    }
+                });
+            }
+            function detail_nongyao_enddate_change() {
+                if ($("#detail_nongyao_start_date").val() > $("#detail_nongyao_end_date").val()) {
+                    toastr.options = {
+                        "closeButton": false,
+                        "debug": true,
+                        "positionClass": "toast-top-center",
+                        "onclick": null,
+                        "showDuration": "3",
+                        "hideDuration": "3",
+                        "timeOut": "2500",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    };
+                    toastr["error"]("日期错误，开始日期要提前结束日期", "温馨敬告");
+                }
+                $.ajax({
+                    url: "@Url.Content("~/Statistics/detailNongyaoEndDateChange/")",
+                    data: {
+                        endDate: $("#detail_nongyao_end_date").val()
+                    },
+                    success: function (data) {
+                        refreshDetailPillar();
+                    }
+                });
+            }
+            function search_detail_nongyao_func() {
+                $.ajax({
+                    url: "@Url.Content("~/Statistics/searchNongyao/")",
+                    data: {
+                        basepinyin: $("#detail_nongyao_pinyin").val()
+                    },
+                    success: function (data) {
+                        var nongyao = data.nongyaolist;
+                        var html = "";
+                        for (var i = 0; i < nongyao.length; i++) {
+                            html += "<option value=\"" + nongyao[i].uid + "\">&nbsp;&nbsp;" + nongyao[i].name + "</option>";
+                        }
+                        $("#detail_nongyao_select").html(html);
+                    }
+                });
+            }
+            function changeDetailNongyaoType() {
+                $.ajax({
+                    url: "@Url.Content("~/Statistics/changeDetailNongyaoType/")",
+                    data: {
+                        typeid: $("#detail_nongyaoType").val()
+                    },
+                    success: function (data) {
+                        $("#detail_nongyao_pinyin").val("");
+                        $("#detail_nongyao_select").html("");
+                        refreshDetailPillar();
+                    }
+                });
+            }
+            function selectdetail_nongyao() {
+                $.ajax({
+                    url: "@Url.Content("~/Statistics/changeDetailNongId/")",
+                    data: {
+                        nongyao_id: $("#detail_nongyao_select").val()
+                    },
+                    success: function (data) {
+                        refreshDetailPillar();
+                    }
+                });
+            }
+            function cancelDetail() {
+                $("#detail_nongyao_start_date").val("@Convert.ToString(ViewBag.Year)-@String.Format("{0:00}", ViewBag.Month)-@String.Format("{0:00}", ViewBag.Day)");
+                $("#detail_nongyao_end_date").val("@String.Format("{0:yyyy-MM-dd}",DateTime.Now)");
+                $("#detail_nongyaoType").val(0);
+                $("#detail_nongyao_pinyin").val("");
+                $("#detail_nongyao_select").html("");
+                $.ajax({
+                    url: "@Url.Content("~/Statistics/cleanDetailFilter/")",
+                    data: {
+                    },
+                    success: function (data) {
+                        refreshDetailPillar();
+                    }
+                });
+            }
+            function detail_search_nongyao() {
+                if ($("#detail_nongyao_pinyin").val() == "") {
+                    $("#detail_nongyao_select").html("");
+                    changeNongyaoType();
+                }
+                else {
+                    $.ajax({
+                        url: "@Url.Content("~/Statistics/detail_searchNongyao/")",
+                        data: {
+                            basepinyin: $("#detail_nongyao_pinyin").val()
+                        },
+                        success: function (data) {
+                            var nongyao = data.nongyaolist;
+                            var html = "";
+                            for (var i = 0; i < nongyao.length; i++) {
+                                html += "<option value=\"" + nongyao[i].uid + "\">&nbsp;&nbsp;" + nongyao[i].name + "</option>";
+                            }
+                            $("#detail_nongyao_select").html(html);
+                            detail_selectNongyao();
+                        }
+                    });
+                }
+            }
+
+            function detail_selectNongyao() {
+                $.ajax({
+                    url: "@Url.Content("~/Statistics/detail_changeNongyao/")",
+                    data: {
+                        nongyao_id: $("#detail_nongyao_select").val()
+                    },
+                    success: function (data) {
+                        refreshDetailPillar();
+                    }
+                });
+            }
+            function createSlider(val) {
+                $("#slider_part").show();
+                    Slider = $("#Slider").kendoSlider({
+                        min: 0,
+                        max: val - 10,
+                        val: val,
+                        slide: scrollDiagram,
+                        change: scrollDiagram,
+                    });
+                
+            }
+            function createDetailSlider(val) {
+                $("#detail_slider_part").show();
+                $("#detail_Slider").kendoSlider({
+                    min: 0,
+                    max: val - 10,
+                    val: val,
+                    slide: detail_scrollDiagram,
+                    change: detail_scrollDiagram,
+                });
+            }
+            
+            function scrollDiagram(e) {
+                $("#pillarChart").kendoChart({
+                    theme: $(document).data("kendoSkin") || "kendo",
+                    title: {
+                        //text: title
+                    },
+                    dataSource: {
+                        transport: {
+                            read: {
+                                url: "@Url.Content("~/Statistics/re_GetAreaSaleCount")",
+                                data: {
+                                    year: $("#year").val(),
+                                    cur_val: e.value
+                                },
+                                dataType: "json"
+                            }
+                        },
+                        sort: {
+                        }
+                    },
+                    legend: {
+                        position: "bottom"
+                    },
+                    seriesDefaults: {
+                        type: "column",
+                        stack: true,
+                    },
+                    series: [{
+                        field: "saleCount",
+                        labels: {
+                            visible: true,
+                            format: "{0}"
+                        },
+                        name: "销售数量"
+                    }, {
+                        field: "remainCount",
+                        color: "blue",
+                        labels: {
+                            visible: true,
+                            format: "{0}",
+                        },
+                        name: "库存数量"
+                    }],
+                    valueAxis: {
+                        labels: {
+                            format: "{0}",
+                        }
+                    },
+                    categoryAxis: {
+                        field: "area",
+                        labels: {
+                            rotation: 45,
+                        }
+                    },
+                    tooltip: {
+                        visible: true,
+                        format: "{0}"
+                    }
+                });
+            }
+            function detail_scrollDiagram(e) {
+                $("#detailPillarChart").kendoChart({
+                    theme: $(document).data("kendoSkin") || "kendo",
+                    title: {
+                        //text: title
+                    },
+                    dataSource: {
+                        transport: {
+                            read: {
+                                url: "@Url.Content("~/Statistics/re_GetDetailAreaSaleCount")",
+                                data: {
+                                   cur_val:e.value
+                                },
+                                dataType: "json"
+                            }
+                        },
+                        sort: {
+                        }
+                    },
+                    legend: {
+                        position: "bottom"
+                    },
+                    seriesDefaults: {
+                        type: "column",
+                        stack: true,
+                    },
+                    series: [{
+                        field: "saleCount",
+                        labels: {
+                            visible: true,
+                            format: "{0}"
+                        },
+                        name: "销售数量"
+                    }, {
+                        field: "remainCount",
+                        color: "blue",
+                        labels: {
+                            visible: true,
+                            format: "{0}",
+                        },
+                        name: "库存数量"
+                    }],
+                    valueAxis: {
+                        labels: {
+                            format: "{0}",
+                        }
+                    },
+                    categoryAxis: {
+                        field: "area",
+                        labels: {
+                            rotation: 45,
+                        }
+                    },
+                    tooltip: {
+                        visible: true,
+                        format: "{0}"
+                    }
+                });
+            }
+        </script>
+    </body>
+</html>

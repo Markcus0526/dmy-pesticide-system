@@ -1,0 +1,150 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 18, 19.5" name="NongYaoModel">
+  <DataContextMoniker Name="/NongYaoModelDataContext" />
+  <nestedChildShapes>
+    <classShape Id="abd421bd-b3a5-4da9-bdde-e51024744229" absoluteBounds="0.75, 0.75, 2, 2.5555240885416666">
+      <DataClassMoniker Name="/NongYaoModelDataContext/tbl_admin" />
+      <nestedChildShapes>
+        <elementListCompartment Id="40ca2856-221f-443f-a875-58684402f0ae" absoluteBounds="0.765, 1.21, 1.9700000000000002, 1.9955240885416665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="3111ca67-44a9-47aa-9004-df20eb4e5758" absoluteBounds="3.75, 0.75, 2, 1.317080078125">
+      <DataClassMoniker Name="/NongYaoModelDataContext/tbl_version" />
+      <nestedChildShapes>
+        <elementListCompartment Id="d175ac8f-3ec8-422a-ace7-0579a1a805e5" absoluteBounds="3.765, 1.21, 1.9700000000000002, 0.757080078125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="ea47e538-360d-4b88-a13b-d9942f51ef7b" absoluteBounds="3.75, 3.75, 2, 3.2632063802083326">
+      <DataClassMoniker Name="/NongYaoModelDataContext/tbl_buying" />
+      <nestedChildShapes>
+        <elementListCompartment Id="dc626a7f-82ef-46a4-a8fc-6167c9280eae" absoluteBounds="3.765, 4.21, 1.9700000000000002, 2.703206380208333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="f029951f-feaa-4d89-bae1-e9901e731b1e" absoluteBounds="6.75, 0.75, 2, 6.093935546875">
+      <DataClassMoniker Name="/NongYaoModelDataContext/tbl_catalog" />
+      <nestedChildShapes>
+        <elementListCompartment Id="b2aacbbe-e437-4d51-b0ee-60878cac39e4" absoluteBounds="6.765, 1.21, 1.9700000000000002, 5.533935546875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="68cef3af-0fb2-46e3-8eed-07b34a48af82" absoluteBounds="6.75, 7.75, 2, 1.8478417968749996">
+      <DataClassMoniker Name="/NongYaoModelDataContext/tbl_change" />
+      <nestedChildShapes>
+        <elementListCompartment Id="ddcf0527-04f5-425a-870a-eaeb53abe015" absoluteBounds="6.765, 8.21, 1.9700000000000002, 1.287841796875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="ad438f53-84d3-42f0-ba67-2f9cd276e19a" absoluteBounds="0.75, 8.75, 2, 1.8478417968749987">
+      <DataClassMoniker Name="/NongYaoModelDataContext/tbl_customerlist" />
+      <nestedChildShapes>
+        <elementListCompartment Id="ae29b3df-6702-4f44-85a3-722ff1fa2ff4" absoluteBounds="0.765, 9.21, 1.9700000000000002, 1.287841796875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="0847acd7-830b-4a3a-8f01-b0cd5603dd7e" absoluteBounds="9.75, 0.75, 2, 3.0862858072916666">
+      <DataClassMoniker Name="/NongYaoModelDataContext/tbl_earnlist" />
+      <nestedChildShapes>
+        <elementListCompartment Id="3aa8e12a-b1b0-43d7-a464-71a3f857818e" absoluteBounds="9.765, 1.21, 1.9700000000000002, 2.5262858072916665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="0e92074f-5575-46d3-b281-5fd236882e92" absoluteBounds="9.75, 4.75, 2, 1.6709212239583327">
+      <DataClassMoniker Name="/NongYaoModelDataContext/tbl_nongyao" />
+      <nestedChildShapes>
+        <elementListCompartment Id="c4efe2d3-56bb-4018-9cc1-748bf3b5defb" absoluteBounds="9.765, 5.21, 1.9700000000000002, 1.1109212239583333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="3707a482-02ce-408a-84f8-d560cc67bdd6" absoluteBounds="9.75, 7.75, 2, 2.3786035156249996">
+      <DataClassMoniker Name="/NongYaoModelDataContext/tbl_otherpay" />
+      <nestedChildShapes>
+        <elementListCompartment Id="d05932e3-3644-4b4f-8114-01e4672da1f0" absoluteBounds="9.765, 8.21, 1.9700000000000002, 1.818603515625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="b9bf1238-c731-4c6d-b451-a60e6ba9b345" absoluteBounds="3.75, 10.75, 2, 2.9093652343750023">
+      <DataClassMoniker Name="/NongYaoModelDataContext/tbl_payment" />
+      <nestedChildShapes>
+        <elementListCompartment Id="28b022fb-3e6b-42f2-a55e-5fd0d121172b" absoluteBounds="3.765, 11.21, 1.9700000000000002, 2.349365234375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="03c130e0-0cd8-47c7-bffe-e5531a45733f" absoluteBounds="6.75, 11.75, 2, 2.7324446614583344">
+      <DataClassMoniker Name="/NongYaoModelDataContext/tbl_realpayment" />
+      <nestedChildShapes>
+        <elementListCompartment Id="0443d28f-11af-48af-9db4-92583d75a8c0" absoluteBounds="6.765, 12.21, 1.9700000000000002, 2.172444661458333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="19fff6da-758e-40a1-96d3-5cbf9e8f8d03" absoluteBounds="9.75, 11.75, 2, 1.6709212239583344">
+      <DataClassMoniker Name="/NongYaoModelDataContext/tbl_region" />
+      <nestedChildShapes>
+        <elementListCompartment Id="aac054ef-a9b0-4da0-9d4b-6b250b2969bf" absoluteBounds="9.765, 12.21, 1.9700000000000002, 1.1109212239583333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="fc630798-2aba-48ae-ac96-6feff15cda74" absoluteBounds="12.75, 0.75, 2, 3.9708886718749992">
+      <DataClassMoniker Name="/NongYaoModelDataContext/tbl_remain" />
+      <nestedChildShapes>
+        <elementListCompartment Id="a3965b54-b0e6-4078-a2c3-311e34041fd9" absoluteBounds="12.765, 1.21, 1.9700000000000002, 3.410888671875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="a96b1dc0-4e1c-4fe6-9f7a-77625fdddd51" absoluteBounds="12.75, 5.75, 2, 2.3786035156249996">
+      <DataClassMoniker Name="/NongYaoModelDataContext/tbl_salelist" />
+      <nestedChildShapes>
+        <elementListCompartment Id="04524913-0f24-4ec0-8d32-f6e4b1c3f950" absoluteBounds="12.765, 6.21, 1.9700000000000002, 1.818603515625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="8cb11dcb-023d-432b-aa15-93e9842e8121" absoluteBounds="12.75, 9.75, 2, 2.9093652343750023">
+      <DataClassMoniker Name="/NongYaoModelDataContext/tbl_salestatistic" />
+      <nestedChildShapes>
+        <elementListCompartment Id="b3f1f416-0519-4e4b-a2db-d38cf54fc6a6" absoluteBounds="12.765, 10.21, 1.9700000000000002, 2.349365234375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="53ef2460-5b8e-4641-91a3-56b53198e87e" absoluteBounds="12.75, 13.75, 2, 5.2093326822916666">
+      <DataClassMoniker Name="/NongYaoModelDataContext/tbl_shop" />
+      <nestedChildShapes>
+        <elementListCompartment Id="7f54da52-9e09-4251-99e3-195a7367930e" absoluteBounds="12.765, 14.21, 1.9700000000000002, 4.6493326822916661" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="a4f92d75-7f84-4ec5-b143-b8716bfab486" absoluteBounds="0.75, 14.75, 2, 1.6709212239583344">
+      <DataClassMoniker Name="/NongYaoModelDataContext/tbl_standard" />
+      <nestedChildShapes>
+        <elementListCompartment Id="82f04854-5a02-4f99-a213-ec26243466d5" absoluteBounds="0.765, 15.21, 1.9700000000000002, 1.1109212239583333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="d56c6858-3e41-41f7-83d9-cc5d1ad1c6f8" absoluteBounds="15.75, 0.75, 2, 1.8478417968750003">
+      <DataClassMoniker Name="/NongYaoModelDataContext/tbl_store" />
+      <nestedChildShapes>
+        <elementListCompartment Id="319f992f-eadc-49be-aab4-d5812bad72e1" absoluteBounds="15.765, 1.21, 1.9700000000000002, 1.287841796875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="9d93015c-1730-4609-a95a-601cac248c42" absoluteBounds="15.75, 3.75, 2, 2.5555240885416666">
+      <DataClassMoniker Name="/NongYaoModelDataContext/tbl_storemoving" />
+      <nestedChildShapes>
+        <elementListCompartment Id="43bd7bdb-3e18-41a8-91b3-4720f3eb1cfd" absoluteBounds="15.765, 4.21, 1.9700000000000002, 1.9955240885416665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="83152d36-750b-4e0b-8f73-ecd5690a1eea" absoluteBounds="3.75, 15.75, 2, 2.9093652343750023">
+      <DataClassMoniker Name="/NongYaoModelDataContext/tbl_supply" />
+      <nestedChildShapes>
+        <elementListCompartment Id="1349ee12-f7cd-416a-b2b4-da1d75780248" absoluteBounds="3.765, 16.21, 1.9700000000000002, 2.349365234375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="d18f14fa-ad33-404d-9c96-0ee113de4e7a" absoluteBounds="6.75, 15.75, 2, 3.4401269531250023">
+      <DataClassMoniker Name="/NongYaoModelDataContext/tbl_ticket" />
+      <nestedChildShapes>
+        <elementListCompartment Id="aea6d1ac-09f4-4b98-b33a-bfbb17528bcb" absoluteBounds="6.765, 16.21, 1.9700000000000002, 2.880126953125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="91141dee-67f9-4e14-862d-ea3dbef80f0b" absoluteBounds="15.75, 7.75, 2, 1.6709212239583335">
+      <DataClassMoniker Name="/NongYaoModelDataContext/tbl_unit" />
+      <nestedChildShapes>
+        <elementListCompartment Id="ce063295-443e-4cce-8992-ac5a933019f0" absoluteBounds="15.765, 8.21, 1.9700000000000002, 1.1109212239583333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="bb972d34-2750-40e0-8aaa-f75f67aae19a" absoluteBounds="15.75, 10.75, 2, 2.3786035156249987">
+      <DataClassMoniker Name="/NongYaoModelDataContext/tbl_user" />
+      <nestedChildShapes>
+        <elementListCompartment Id="a283c1d0-9cab-42a3-ae2e-d16aff1418bf" absoluteBounds="15.765, 11.21, 1.9700000000000002, 1.818603515625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="157f6bc3-a34e-4e4d-816d-1f635e25bcb6" absoluteBounds="15.75, 14.75, 2, 2.7324446614583326">
+      <DataClassMoniker Name="/NongYaoModelDataContext/tbl_usinglist" />
+      <nestedChildShapes>
+        <elementListCompartment Id="6c4d965c-d5fd-4752-894e-72def303acc1" absoluteBounds="15.765, 15.21, 1.9700000000000002, 2.172444661458333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>

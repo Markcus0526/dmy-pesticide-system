@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="90px" android:id="@+id/item_layout" android:background="#FF707070">
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" android:layout_marginTop="10px" android:layout_marginBottom="10px">
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="New Text"
+                android:id="@+id/txt_name" android:layout_weight="1" android:gravity="center_vertical"
+                android:layout_marginLeft="20px" android:textSize="22px" android:textColor="#FFFFFF"/>
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="New Text"
+                android:id="@+id/txt_mac" android:layout_weight="1" android:gravity="center_vertical"
+                android:layout_marginLeft="20px" android:textSize="22px" android:textColor="#FFFFFF"/>
+    </LinearLayout>
+    <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:id="@+id/imageView" android:layout_alignParentBottom="true" android:background="#FFFFFF"/>
+    <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_item" android:layout_above="@+id/imageView" android:layout_alignParentTop="true"
+            android:background="@null"/>
+</RelativeLayout>

@@ -1,0 +1,407 @@
+﻿@model NongYaoBackend.Models.RegisterModel
+@{
+    ViewBag.Title = "农药溯源管理云平台";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link href="@Url.Content("~/Content/plugins/select2/select2_metro.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/plugins/bootstrap-toastr/toastr.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/plugins/data-tables/DT_bootstrap.css")" rel="stylesheet" type="text/css" />
+
+    <link href="@Url.Content("~/Content/plugins/Kendo_jQuery/examples/styles/examples.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/plugins/Kendo_jQuery/source/styles/kendo.common.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/plugins/Kendo_jQuery/source/styles/kendo.kendo.css")" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+
+    <table>
+        <tr>
+            <td align="center" width="600px">
+
+                <div class="row" style="padding-top: 50px;">
+                    <div class="col-md-12">
+                        <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+                        <h3 class="page-title">
+                            <span class="glyphicon glyphicon-edit"></span>
+                            用户注册
+                        </h3>
+                        <hr />
+                    </div>
+                </div>
+
+                <div class="portlet-body form">
+                    <form action="#" id="form_agent" class="form-horizontal form-validate">
+                        <div class="form-body">
+
+                            <div class="alert alert-danger display-hide">
+                                <button class="close" data-close="alert"></button>
+                                <table>
+                                    <tr>
+                                        <td width="100%">您还未完成填写信息，请确认下面的内容。</td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <div class="alert alert-success display-none">
+                                <button class="close" data-dismiss="alert"></button>
+                                <table>
+                                    <tr>
+                                        <td width="100%">提交中，请稍等...</td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                                <table>
+                                    <tr>
+                                        <td style="vertical-align:top;">                                            
+                                            <label class="control-label">用户姓名：<span class="required">*</span></label>
+                                            </td>
+                                        <td align="left" width="300px">
+                            <div class="form-group">
+                                            <div class="col-md-4">
+                                                <input type="text" name="name" id="name" data-required="1" maxlength="25" style="width: 250px;" class="form-control" value="" />
+                                            </div>
+                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="vertical-align:top;">
+                                            <label class="control-label">用户名称：<span class="required">*</span></label>
+                                            </td>
+                                        <td align="left">
+                                            
+                            <div class="form-group">
+                                            <div class="col-md-4">
+                                                <table><tr>
+                                                <td style="padding-left:0px; vertical-align:top"><input type="text" name="userid" id="userid" data-required="1" maxlength="20" style="width: 154px;" class="form-control" value="" />
+                                                </td>
+                                                   <td style="padding-left:0px; vertical-align:top"> <button type="button" class="btn custom_button" onclick="doUniqueCheck();">唯一性检测</button>
+                                                    </td></tr></table>
+                                            </div>
+                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="vertical-align:top;">
+                                            <label class="control-label">密码：<span class="required">*</span></label>
+                                            </td>
+                                        <td align="left">
+                            <div class="form-group">
+                                            <div class="col-md-4">
+                                                <input type="password" class="form-control" name="password" id="submit_form_password" style="width: 250px;" value="" />
+                                            </div>
+                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="vertical-align:top;">
+                                            <label class="control-label">密码确认：<span class="required">*</span></label>
+                                            </td>
+                                        <td align="left">
+                            <div class="form-group">
+                                            <div class="col-md-4">
+                                                <input type="password" class="form-control" name="rpassword" style="width: 250px;" value="" />
+                                            </div>
+                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="vertical-align:top;">
+                                            <label class="control-label">手机号码：<span class="required">*</span></label>
+                                            </td>
+                                        <td align="left">
+                            <div class="form-group">
+                                            <div class="col-md-4">
+                                                <input type="text" name="phonenum" id="phonenum" data-required="1" maxlength="20" style="width: 250px;" class="form-control" value="" onkeyup="this.value=this.value.replace(/[^\d]/,'')"/>
+                                            </div>
+                            </div>
+                                        </td>
+                                    </tr>
+                                    </table>
+
+                        </div>
+
+                        <div class="form-actions">
+                            <div class="">
+                                <button type="button" onclick="doSubmit();" data-loading-text="提交中..." class="loading-btn btn btn-primary custom_button">
+                                    注册
+                                </button>
+                                <button type="button" class="btn custom_button" onclick="window.history.go(-1);">返回</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+  
+    <script src="@Url.Content("~/Content/plugins/jquery-1.10.2.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/plugins/bootstrap/js/bootstrap.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/plugins/jquery.blockui.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/plugins/jquery.cookie.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/plugins/uniform/jquery.uniform.min.js")" type="text/javascript"></script>
+
+    <script src="@Url.Content("~/Content/plugins/bootbox/bootbox.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/plugins/bootstrap-toastr/toastr.js")" type="text/javascript"></script>
+
+    <script src="@Url.Content("~/Content/plugins/jquery-validation/dist/jquery.validate.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/plugins/jquery-validation/dist/additional-methods.min.js")" type="text/javascript"></script>
+
+    <script src="@Url.Content("~/Content/scripts/app.js")"></script>
+
+
+    <script>
+
+        jQuery(document).ready(function () {
+            //App.init();
+
+            // initiate layout and plugins
+            var form1 = $('#form_agent');
+            error = $('.alert-danger', form1);
+            success = $('.alert-success', form1);
+
+            $.validator.messages.required = "必须要填写";
+            $.validator.messages.remote = "请输入正确的"
+            $.validator.messages.password = "确认密码不同"
+            $.validator.messages.number = "请输入数字"
+            $.validator.messages.digits = "请输入数字"
+            $.validator.messages.creditcard = "请输入信用卡格式"
+            $.validator.messages.equalTo = "确认密码不同"
+            $.validator.messages.maxlength = $.validator.format("输入的文字数量超过了");
+            $.validator.messages.minlength = $.validator.format("输入的文字数量太少");
+            $.validator.messages.rangelength = $.validator.format("输入的文字数量没在范围");
+            $.validator.messages.range = $.validator.format("输入的数值没在范围");
+            $.validator.messages.max = $.validator.format("输入的数值超过了");
+            $.validator.messages.min = $.validator.format("输入的数值太少");
+
+
+            form1.validate({
+                doNotHideMessage: true, //this option enables to show the error/success messages on tab switch.
+                errorElement: 'span', //default input error message container
+                errorClass: 'help-block', // default input error message class
+                focusInvalid: false, // do not focus the last invalid input
+                rules: {
+                    name: {
+                        required: true,
+                        minlength: 1,
+                        maxlength: 10
+                    },
+                    userid: {
+                        required: true,
+                    },
+                    password: {
+                        required: true,
+                        minlength: 1,
+                    },
+                    rpassword: {
+                        required: true,
+                        minlength: 1,
+                        equalTo: "#submit_form_password"
+                    },
+                    phonenum: {
+                        required: true,
+                        digits: true,
+                        maxlength: 11
+                    }
+                },
+
+                errorPlacement: function (error, element) { // render error placement for each input type
+                    if (element.attr("name") == "gender") { // for uniform radio buttons, insert the after the given container
+                        error.insertAfter("#form_gender_error");
+                    } else if (element.attr("name") == "payment[]") { // for uniform radio buttons, insert the after the given container
+                        error.insertAfter("#form_payment_error");
+                    } else {
+                        error.insertAfter(element); // for other inputs, just perform default behavior
+                    }
+                },
+
+                invalidHandler: function (event, validator) { //display error alert on form submit   
+                    success.hide();
+                    error.show();
+                    App.scrollTo(error, -200);
+                },
+
+                highlight: function (element) { // hightlight error inputs
+                    $(element)
+                        .closest('.form-group').removeClass('has-success').addClass('has-error'); // set error class to the control group
+                },
+
+                unhighlight: function (element) { // revert the change done by hightlight
+                    $(element)
+                        .closest('.form-group').removeClass('has-error'); // set error class to the control group
+                },
+
+                success: function (label) {
+                    if (label.attr("for") == "gender" || label.attr("for") == "payment[]") { // for checkboxes and radio buttons, no need to show OK icon
+                        label
+                            .closest('.form-group').removeClass('has-error').addClass('has-success');
+                        label.remove(); // remove error label here
+                    } else { // display success icon for other inputs
+                        label
+                            .addClass('valid') // mark the current input as valid and display OK icon
+                        .closest('.form-group').removeClass('has-error').addClass('has-success'); // set success class to the control group
+                    }
+                },
+
+                submitHandler: function (form) {
+                    success.show();
+                    error.hide();
+                    //add here some ajax code to submit your form or just call form.submit() if you want to submit the form without ajax
+                }
+
+            });
+        });
+
+        var whichSuccess = 0;
+
+        function redirectToListPage(status) {
+            if (status.indexOf("error") != -1) {
+                $('.alert-success').hide();
+                $('.loading-btn').button('reset');
+            } else {
+                if ( whichSuccess == 1 )
+                    window.history.go(-1);
+            }
+        }
+
+        function doUniqueCheck() {
+            if ($("#userid").val().length > 0) {
+                $.ajax({
+                    async: false,
+                    type: "POST",
+                    url: "@Url.Content("~/Account/RegisterUniqueCheck")",
+                    dataType: "json",
+                    data: {
+                        userid: $("#userid").val()
+                    },
+                    success: function (data) {
+                        if (data == true) {
+                            toastr.options = {
+                                "closeButton": false,
+                                "debug": true,
+                                "positionClass": "toast-top-center",
+                                "onclick": null,
+                                "showDuration": "3",
+                                "hideDuration": "3",
+                                "timeOut": "1500",
+                                "extendedTimeOut": "1000",
+                                "showEasing": "swing",
+                                "hideEasing": "linear",
+                                "showMethod": "fadeIn",
+                                "hideMethod": "fadeOut"
+                            };
+                            toastr["success"]("你可以使用这个用户名称");
+                            whichSuccess = 0;
+                        } else {
+                            toastr.options = {
+                                "closeButton": false,
+                                "debug": true,
+                                "positionClass": "toast-top-center",
+                                "onclick": null,
+                                "showDuration": "3",
+                                "hideDuration": "3",
+                                "timeOut": "1500",
+                                "extendedTimeOut": "1000",
+                                "showEasing": "swing",
+                                "hideEasing": "linear",
+                                "showMethod": "fadeIn",
+                                "hideMethod": "fadeOut"
+                            };
+                            toastr["error"](data.error, "使用别的用户名称");
+
+                        }
+                    },
+                    error: function (data) {
+                        alert("Error: " + data.status);
+                        $('.loading-btn').button('reset');
+                    }
+                });
+            } else {
+                toastr.options = {
+                    "closeButton": false,
+                    "debug": true,
+                    "positionClass": "toast-top-center",
+                    "onclick": null,
+                    "showDuration": "3",
+                    "hideDuration": "3",
+                    "timeOut": "1500",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                };
+                toastr["error"]("", "请输入客户姓名");
+            }
+        }
+
+        function doSubmit() {
+            if ($('#form_agent').valid()) {
+                $('.alert-danger').hide();
+
+                $.ajax({
+                    async: false,
+                    type: "POST",
+                    url: "@Url.Content("~/Account/Register")",
+                    dataType: "json",
+                    data: $('#form_agent').serialize(),
+                    success: function (data) {
+                        if (data == true) {
+                            toastr.options = {
+                                "closeButton": false,
+                                "debug": true,
+                                "positionClass": "toast-top-center",
+                                "onclick": null,
+                                "showDuration": "3",
+                                "hideDuration": "3",
+                                "timeOut": "1500",
+                                "extendedTimeOut": "1000",
+                                "showEasing": "swing",
+                                "hideEasing": "linear",
+                                "showMethod": "fadeIn",
+                                "hideMethod": "fadeOut"
+                            };
+                            toastr["success"]("操作成功!", "恭喜您");
+                            whichSuccess = 1;
+                        } else {
+                            toastr.options = {
+                                "closeButton": false,
+                                "debug": true,
+                                "positionClass": "toast-top-center",
+                                "onclick": null,
+                                "showDuration": "3",
+                                "hideDuration": "3",
+                                "timeOut": "1500",
+                                "extendedTimeOut": "1000",
+                                "showEasing": "swing",
+                                "hideEasing": "linear",
+                                "showMethod": "fadeIn",
+                                "hideMethod": "fadeOut"
+                            };
+                            toastr["error"](data.error, "温馨敬告");
+
+                        }
+                    },
+                    error: function (data) {
+                        alert("Error: " + data.status);
+                        $('.loading-btn').button('reset');
+                    }
+                });
+            }
+        }
+
+
+    </script>
+
+</body>
+</html>
+

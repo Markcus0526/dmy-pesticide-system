@@ -1,0 +1,634 @@
+body {
+	margin: 0px;
+	padding: 0px;
+	text-align: center;
+}
+a {
+	color: white;
+	text-decoration: none;
+}
+img:hover {
+    cursor:pointer;
+}
+#header, #content, #footer {
+	width: 1148px;
+	min-width: 1024px;
+	max-width: 1148px;
+}
+#header {
+	/*height: 110px;
+	background: rgba(196, 225, 236, 0.427);*/
+}
+#content {
+	padding-top: 10px;
+}
+#logo_title {	
+
+	height: 103px;	
+	text-align: left;
+	background-image:url(../img/header_back.png);
+}
+#menu {
+	width: 100%;
+	height: 36px;
+	/*border: 1px solid #000;*/
+	border-radius: 4px;
+}
+#menu_tb {	
+	width: 100%;
+	height: 36px;
+}
+.menu_td {
+	width: 14%;
+	/*border-right: 1px solid #000;*/
+	text-align: center;
+	background-image:url(../img/tab_back.png);
+}
+
+.menu_td.active{
+	/*border-bottom:5px solid rgb(131, 168, 83);*/
+	text-align: center;
+	
+    background-image:url(../img/sel_tab.png);
+}
+.menu_td a:hover{
+	text-decoration: none;
+   color: #ffffff;
+}
+.menu_td:hover{
+	/*border-bottom:5px solid rgb(131, 168, 83);*/
+	text-align: center;
+    background-image:url(../img/sel_tab.png);
+}
+
+.last_menu_td {
+	width: 14%;
+	text-align: center;
+	background-image:url(../img/tab_back.png);
+}
+.last_menu_td:hover{
+	/*border-bottom:5px solid rgb(131, 168, 83);*/
+	text-align: center;
+    background-image:url(../img/sel_tab.png);
+}
+.last_menu_td.active{
+	/*border-bottom:5px solid rgb(131, 168, 83);*/
+	text-align: center;
+    background-image:url(../img/sel_tab.png);
+}
+.last_menu_td a:hover{
+   text-decoration: none;
+   color: #ffffff;
+}
+#content .ui-widget-content {
+	border: 0;
+}
+#content .ui-widget-header {
+	background: #fff;
+	border: 0;
+}
+#content .ui-tabs-panel {
+	border: 1px solid  rgb(170, 170, 170);
+}
+.table_view {
+	width: 96%;
+	margin: 20px 0px;
+	background: rgb(204, 204, 204);
+	border-collapse: separate;
+	border-spacing: 1px;
+}
+.dark_tr td {
+	background: rgb(242, 242, 242);
+}
+.bright_tr td {
+	background: rgb(255, 255, 255);
+}
+.table_view th {
+	background: rgb(215, 215, 215);
+}
+.btn {
+	color: white;
+	border: 0;
+	background: url("../img/btn.png");
+	width:115px;
+	height:32px;
+}
+.btn:hover {
+	color: black;
+	border: 0;
+	background: url("../img/btn.png");
+	width:115px;
+	height:32px;
+}
+.table_subtab .btn {
+	padding: 0;
+	border-radius: 0;
+}
+
+.table_edit .btn{
+	padding: 0;
+	border-radius: 0;
+}
+
+.btn_rect{
+	color: white;
+	border: 0;
+	background: url("../img/btn.png");
+	width:115px;
+	height:32px;
+}
+
+.btn_rect:hover{
+	color: black;
+	border: 0;
+	background: url("../img/btn.png");
+	width:115px;
+	height:32px;
+}
+
+.btn_blue{
+	border: 0;
+	background: rgb(0, 153, 255);
+	height: 30px;
+}
+
+.btn_action{
+	color: white;
+	border: 0;
+	background:  url("../img/btn.png");
+	float:right;
+	margin-right:25px;
+	width:115px;
+	height: 32px;
+}
+
+.btn_action:hover{
+	color: black;
+	border: 0;
+	background:  url("../img/btn.png");
+	float:right;
+	margin-right:25px;
+	width:115px;
+	height: 32px;
+}
+
+.btn_actionex{
+	color: white;
+	border: 0;
+	background: url("../img/btn.png");
+	float:right;
+	margin-right:25px;
+	margin-bottom:10px;
+	width:115px;
+	height: 32px;
+}
+.btn_actionex:hover{
+	color: black;
+	border: 0;
+	background: url("../img/btn.png");
+	float:right;
+	margin-right:25px;
+	margin-bottom:10px;
+	width:115px;
+	height: 32px;
+}
+.btn_tabright{
+	color: white;
+	border: 0;
+	background-image: url("../img/btn.png");
+	float:right;
+	width:115px;
+	height: 32px;
+}
+
+.btn_tabright:hover{
+	color: black;
+	border: 0;
+	background-image: url("../img/btn.png");
+	float:right;
+	width:115px;
+	height: 32px;
+}
+
+
+.btn_submit{
+	color: white;
+	border: 0;
+	background: rgb(255, 102, 0);
+	height: 30px;
+	width: 100px;
+}
+.btn_submit:hover {
+	background: rgb(255, 153, 0);
+}
+#view_modal {
+	color: white;
+	border: 0;
+	background: rgb(255, 102, 0);
+	height: 30px;
+	width: 100px;
+	border-radius: 0px;
+}
+#view_modal:hover {
+	background: rgb(255, 153, 0);
+}
+#view_modal .ui-button-text {
+	padding: 0;
+}
+.search_frm input {
+	width: 400px;
+}
+.page_link {
+	border-radius: 6px;
+	padding: 5px;
+	width: 95%;
+}
+.page_link:hover {
+	background: rgb(0, 153, 255);
+}
+.page_link_current {
+	background: rgb(0, 153, 255);
+}
+.page_link_header, .page_link_footer {
+	background: rgb(255, 255, 255);
+	border: 1px solid  rgb(153, 153, 153);
+}
+.page_link_header:hover, .page_link_footer:hover {
+	background: rgb(0, 153, 255);
+	border: 1px solid  rgb(153, 153, 153);
+}
+.page_link_block {
+	background: rgb(153, 153, 153);
+}
+.page_link_block:hover {
+	background: rgb(153, 153, 153);
+}
+.table_bottom{
+	width: 96%;
+	margin-bottom:20px;
+}
+.table_edit {
+	width: 96%;
+}
+
+.table_edit td {
+    padding: 10px 0px; 
+}
+
+.table_subtab{
+	width: 96%;
+}
+
+.table_subtab td {
+    padding: 10px 0px; 
+}
+
+.table_edit td {
+	text-align: left;
+}
+.table_edit input {
+	width: 300px;
+}
+.table_edit select {
+	width: 300px;
+}
+.table_edit .s_input {
+	width: 20px;
+}
+
+.table_menu td{
+	padding:30px 0px;
+	width:200px;
+	text-align:left;
+}
+.table_menu .image {
+	text-align:right;
+	padding-right:30px;
+}
+
+.table_dialog td{
+	padding:10px 0px;
+}
+#login_title {
+	margin-top: 200px;
+	margin-bottom: 10px;
+	text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.647);
+	font-family: 'SimSun Bold','SimSun';
+	font-size: 28px;
+	color: rgb(0, 51, 153);
+}
+#login_div {
+	width: 400px;
+	height: auto;
+	border: 1px solid  rgb(153, 153, 153);
+	border-radius: 4px;
+	box-shadow: 5px 5px 5px rgba(100, 100, 100, 0.3);
+}
+.login_table {
+	margin-top: 30px;
+	width: 80%;
+}
+.login_table .login_input {
+	width: 200px;
+}
+.login_table tr {
+	height: 60px;
+}
+.login_table button {
+
+	color: white;
+	border: 0;
+	background: rgb(0, 153, 255);
+	height: 30px;
+	width: 100px;
+}
+.login_table button:hover {
+	background: rgb(0, 204, 255);
+}
+#main_title {
+	text-align: left;
+	border-bottom: 1px solid  rgb(153, 153, 153);
+}
+#chg_pwd_div {
+	margin-top: 200px;
+	width: 600px;
+	height: auto;
+	border: 1px solid  rgb(153, 153, 153);
+	border-radius: 4px;
+	box-shadow: 5px 5px 5px rgba(100, 100, 100, 0.3);
+}
+.chg_pwd_table {
+	margin-top: 30px;
+	width: 80%;
+}
+.chg_pwd_table .chg_pwd_input {
+	width: 200px;
+}
+.chg_pwd_table tr {
+	height: 60px;
+}
+.chg_pwd_table button {
+	color: white;
+	border: 0;
+	background: rgb(0, 153, 255);
+	height: 30px;
+	width: 100px;
+}
+.chg_pwd_table button:hover {
+	background: rgb(0, 204, 255);
+}
+.register_table {
+	text-align: left;
+}
+.register_table tr {
+	height: 40px;
+}
+.register_table input {
+	width: 400px;
+}
+.register_table .input_radio {
+	width: 20px;
+}
+.register_table .input_user_name {
+	width: 300px;
+}
+.register_table_button {
+	color: white;
+	border: 0;
+	background: rgb(0, 153, 255);
+	height: 30px;
+	width: 100px;
+}
+.register_table_button:hover {
+	background: rgb(0, 204, 255);
+}
+#welcome {
+	position: relative;
+	top: -30px;
+	left: 200px;
+}
+.small_input_text {
+	width: 200px;
+}
+.receive_table {
+	text-align: left;
+}
+
+.receive_table td {
+    padding: 10px 20px 0px; 
+}
+.receive_table input {
+	width: 600px;
+}
+.receive_table textarea {
+	width: 600px;
+	height: 50px;
+}
+.receive_table select {
+	width: 600px;
+}
+.receive_table .input_radio {
+	width: 20px;
+}
+.receive_table_button {
+	color: white;
+	border: 0;
+	background: url("../img/save_button.png") no-repeat;
+	height: 30px;
+	width: 115px;
+	
+}
+
+.receive_table_button:hover {
+	background: url("../img/save_button.png") no-repeat;
+	color: black;
+	height: 30px;
+	width: 115px;
+}
+.receive_table .control-label {
+	width: 100%;
+}
+.receive_table .sub_table {
+	padding: 0;
+}
+.receive_table .form-control {
+	border-radius: 0;
+}
+.receive_table .modal-body {
+	padding: 0;
+}
+.receive_table .col-md-4 {
+	width: 100%;
+}
+.receive_table .help-block {
+	padding-bottom: 0;
+	margin-bottom: 0;
+}
+.receive_table .form-group {
+	margin-bottom: 0;
+}
+.table_edit .date_input {
+	width: 120px;
+}
+.ui-datepicker-trigger {
+	width: 20px;
+	height: 20px;
+	margin-top: 8px;
+}
+/* start modify jquery dialog css by RSC */
+body .ui-dialog{
+	background: url('../image/dialog_bg.png');
+	border-radius: 0;
+}
+body .ui-dialog .ui-dialog-buttonpane {
+	background: rgba(0,0,0,0);
+	border: 0;
+}
+body .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset .ui-button {
+	background: rgb(0, 153, 255);
+	border-radius: 0;
+	border: 0;
+	color: white;
+	font-size: 12px;
+}
+body .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset .ui-button:hover {
+	background: rgb(0, 204, 255);
+}
+body .ui-dialog .ui-dialog-titlebar {
+	display: none;
+}
+/* end modify */
+.custom-help .form-group {
+	margin: 0;
+}
+.custom-help .form-control {
+    padding-left:2px;
+	/*padding: 0;
+	height: 24px;*/
+}
+.custom-help .help-block {
+	position: absolute;
+	visibility: hidden;
+}
+.custom-help .table_view {
+	margin-top: 40px;
+}
+.search_title {
+	color:#666666;
+}
+.title {
+	color:#666666;
+}
+.welcome {
+   color:#ffffff;
+}
+.logout {
+   color:#ffffff;
+}
+.logout:hover {
+	color:#ccf398;
+}
+
+.btn.btn-dialog {
+	color: white;
+	border: 0;
+	background:  url("../img/btn.png");
+	float:right;
+	margin-right: 10px;
+	width:115px;
+	height: 32px;
+}
+
+.btn-dialog:hover{
+	color: black;
+	border: 0;
+	background:  url("../img/btn.png");
+	float:right;
+	margin-right: 10px;
+	width:115px;
+	height: 32px;
+}
+
+.btn.btn-dialog:hover{
+	color: black;
+	border: 0;
+	background:  url("../img/btn.png");
+	float:right;
+	margin-right: 10px;
+	width:115px;
+	height: 32px;
+}
+
+.btn.btn-upload {
+	color: white;
+	border: 0;
+	background:  url("../img/upload-button.png");	
+	width:200px;
+	height: 32px;
+}
+
+.btn_action1{
+	color: white;
+	border: 0;
+	background:  url("../img/btn.png");
+	margin-right:25px;
+	width:115px;
+	height: 32px;
+}
+
+.btn_action1:hover{
+	color: black;
+	border: 0;
+	background:  url("../img/btn.png");
+	margin-right:25px;
+	width:115px;
+	height: 32px;
+}
+
+.smallfont
+{
+    font-size:12px;
+}
+.smallfont thead tr th
+{
+    font-size:12px !important;
+}
+.smallfont tbody tr td
+{
+    font-size:12px !important;
+}
+.table_edit_small input {
+	width: 200px;
+    padding-right:0;
+}
+.table_edit_small select {
+	width: 200px;
+}
+.table_view_bottom input {
+	width: 100%;
+}
+.table_view_bottom select {
+	width: 100%;
+}
+#tbl_bossreport td {
+    text-align: center;
+}
+#tbl_bossreport input {
+    width: 120px;
+}
+.tinyfont
+{
+    font-size:11px;
+}
+.tinyfont thead tr th
+{
+    padding-left:2px !important;
+    padding-right:2px !important;
+    font-size:11px !important;
+}
+.tinyfont tbody tr td
+{
+    padding-left:2px !important;
+    padding-right:2px !important;
+    font-size:11px !important;
+}

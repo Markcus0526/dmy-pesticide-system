@@ -1,0 +1,131 @@
+﻿<%@ Page Language="C#" Inherits="System.Web.Mvc.ViewPage<dynamic>" %>
+
+<!DOCTYPE html>
+<html>
+<head runat="server">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>农药溯源管理云平台</title>
+
+    <link href="/Content/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/css/style1.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/css/custom.css" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body style="background-color:#ebebeb;">
+    <center>
+        <div class="login-back">
+    <table class="login-table">
+        <tr>
+            <td style="height: 350px; vertical-align: bottom;">
+                <img src="/Content/img/nongyao.png">
+            </td>
+        </tr>
+        <tr>
+            <td style="height: 100px; vertical-align: bottom;">
+                <img src="/Content/img/login_title.png">
+            </td>
+        </tr>
+        <tr>
+            <td style="vertical-align: top;">
+                <% using (Html.BeginForm("LogOn", "Account", FormMethod.Post, new { @class = "login-form" }))
+                   { %>
+                <div class="content login-table" style="padding-top:30px;">
+
+                    <% if (!ViewData.ModelState.IsValid)
+                       { %>
+                    <div class="alert alert-danger alert-radius">
+                        <button class="close" data-dismiss="alert"></button>
+                        <h4><span><%= Html.ValidationMessage("modelerror") %></span></h4>
+                    </div>
+                    <% } %>
+                    
+                    <table class="login-input-table">
+                        <tr>
+                            <td>
+                                <div class="form-group">
+                                    <label class="control-label visible-ie8 visible-ie9">帐号：</label>
+                                    <div class="input-icon ">
+                                        <i class="login-i userback"></i>
+                                        <input class="form-control placeholder-no-fix login-input" type="text" autocomplete="off" placeholder="请输入用户名" name="username" />
+                                    </div>
+
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <label class="control-label visible-ie8 visible-ie9">密码：</label>
+                                    <div class="input-icon left">
+                                        <i class="login-i passback"></i>
+                                        <input class="form-control placeholder-no-fix login-input" type="password" autocomplete="off" placeholder="请输入密码" name="password" />
+                                    </div>
+
+                                </div>
+                            </td>
+                            <tr>
+                                <td style="text-align: left;">
+                                    <div class="form-group">
+                                        <div class="input-icon left">
+                                            <input class="form-control placeholder-no-fix" type="checkbox" name="rememberme" style="width: 100px" />记住密码
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group" style="display: <% =ViewData["isUsingCaptcha"]%>;">
+                                        <div class="input-icon left" style="float: left;">
+                                            <i class="login-i validback"></i>
+                                            <input class="form-control placeholder-no-fix login-input login-valid" type="text" autocomplete="off" placeholder="请输入验证码" name="captcha" />
+                                            <input type="hidden" name="isUsingCaptcha" value='<% =ViewData["isUsingCaptcha"]%>' />
+                                        </div>
+                                        <!--<button type="button" onclick="javascript:void(0);" class="btn captcha-button">换一张</button>-->
+                                        <div style="float: right;" onclick="$('#captcha').attr('src', '/Account/GetCaptcha');" onmouseover="this.style.cursor='pointer'">
+                                            <img id="captcha" src="/Account/GetCaptcha" style="height: 34px;" alt="换一张"/> 
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        <tr>
+                            <td></td>
+                            <td style="text-align: right;">
+                                <div class="form-group">
+                                    <button type="button" onclick="javascript:location='<% =ViewData["rootUri"] %>Account/Register';" class="btn register-button"><b>注册</b></button>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <button type="submit" class="btn register-button loginbtnback"><b>登录</b></button>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <% } %>  
+
+            </td>
+        </tr>
+    </table>
+            </div>
+        </center>
+    <script src="/Content/plugins/jquery-1.10.2.min.js" type="text/javascript"></script>
+    <script src="/Content/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
+    <script src="/Content/plugins/jquery-ui/jquery-ui-1.10.2.custom.min.js" type="text/javascript"></script>
+    <script src="/Content/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+
+    <script src="/Content/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+    <script src="/Content/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+    <script src="/Content/plugins/jquery.cookie.min.js" type="text/javascript"></script>
+    <script src="/Content/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+    <script src="/Content/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/Content/plugins/jquery-validation/dist/jquery.validate.min.js" type="text/javascript"></script>
+    <script src="/Content/plugins/select2/select2.min.js" type="text/javascript"></script>
+    <script src="/Content/scripts/login.js" type="text/javascript"></script>
+    <script src="/Content/scripts/app.js" type="text/javascript"></script>
+
+    <script>
+        jQuery(document).ready(function () {
+            App.init();
+            Login.init();
+        });
+    </script>
+
+</body>
+</html>

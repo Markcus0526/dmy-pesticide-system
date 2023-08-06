@@ -1,0 +1,119 @@
+﻿<%@ Master Language="C#" Inherits="System.Web.Mvc.ViewMasterPage" %>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>农药溯源管理云平台</title>
+    <link rel="stylesheet" href="<%= ViewData["rootUri"] %>Content/css/style.css" type="text/css" />
+    <link rel="stylesheet" href="<%= ViewData["rootUri"] %>Content/css/style1.css" type="text/css" />
+    <link type="text/css" href="<%= ViewData["rootUri"] %>Content/css/themes/base/jquery.ui.all.css" rel="stylesheet" />
+    <link href="<%= ViewData["rootUri"] %>Content/plugins/bootstrap-toastr/toastr.min.css" rel="stylesheet" type="text/css" />
+
+    <link type="text/css" href="<%= ViewData["rootUri"] %>Content/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link type="text/css" href="<%= ViewData["rootUri"] %>Content/plugins/uniform/css/uniform.default.css" rel="stylesheet" />
+    <link href="<%= ViewData["rootUri"] %>Content/css/style-responsive.css" rel="stylesheet" type="text/css" />
+    <link href="<%= ViewData["rootUri"] %>Content/css/plugins.css" rel="stylesheet" type="text/css" />
+    <link href="<%= ViewData["rootUri"] %>Content/css/themes/light.css" rel="stylesheet" type="text/css" id="style_color" />
+    <link href="<%= ViewData["rootUri"] %>Content/css/custom.css" rel="stylesheet" type="text/css" />
+
+<asp:ContentPlaceHolder ID="PageStyle" runat="server" />
+
+    <script type="text/javascript" src="<%= ViewData["rootUri"] %>Content/js/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="<%= ViewData["rootUri"] %>Content/js/ui/jquery.ui.core.js"></script>
+    <script type="text/javascript" src="<%= ViewData["rootUri"] %>Content/js/ui/jquery.ui.widget.js"></script>    
+    <script type="text/javascript" src="<%= ViewData["rootUri"] %>Content/plugins/bootstrap-toastr/toastr.js"></script>
+
+<asp:ContentPlaceHolder ID="PageScripts" runat="server" />
+    <script type="text/javascript">
+        var rootUri = "<%= ViewData["rootUri"] %>";
+        var role = "<% = ViewData["userrole"]%>"
+        function haveRole(type) {
+            switch (type) {
+                case 0:
+                    if (role.search("buying") >= 0 || role.search("admin") >= 0) {
+                        window.location = rootUri + "Supply/Index";
+                        return;
+                    }
+                    break;
+                case 1:
+                    if (role.search("sale") >= 0 || role.search("admin") >= 0) {
+                        window.location = rootUri + "Sale/Index";
+                        return;
+                    }
+                    break;
+                case 2:
+                    if (role.search("store") >= 0 || role.search("admin") >= 0) {
+                        window.location = rootUri + "Store/Index";
+                        return;
+                    }
+                    break;
+                case 3:
+                    if (role.search("account") >= 0 || role.search("admin") >= 0) {
+                        window.location = rootUri + "Money/Index";
+                        return;
+                    }
+                    break;
+                case 4:
+                    if (role.search("admin") >= 0) {
+                        window.location = rootUri + "Main/Index";
+                        return;
+                    }
+                    break;
+            }
+
+            toastr.options = {
+                "closeButton": false,
+                "debug": true,
+                "positionClass": "toast-top-center",
+                "onclick": null,
+                "showDuration": "3",
+                "hideDuration": "3",
+                "timeOut": "1500",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            };
+            toastr["error"]("对不起，没有权限", "温馨敬告");            
+        }
+
+    </script>
+</head>
+<body>
+<center>
+<div id="header">
+	<div id="logo_title">
+        <table style="padding-left:30px;padding-top:50px;" width=100%>
+            <tr>
+                <td align="left" class="logo_image"></td>
+                <td align=right style="padding-right:10px;">
+                    <b class="welcome">欢迎&nbsp;<%= ViewData["userName"] %>!&nbsp;|&nbsp;</b><a class="logout" href="<%= ViewData["rootUri"]%>Password/Index">修改密码</a>&nbsp;|&nbsp;<a class="logout" href="<%= ViewData["rootUri"]%>Account/LogOff">[ 退出 ]</a>
+                </td>
+            </tr>
+        </table>
+	</div>
+	<div id="menu">
+		<table id="menu_tb" cellspacing=0 cellpadding=0><tr>
+		<td id="first" class="menu_td"><a href="<%= ViewData["rootUri"]%>First/Index"><div>首页</div></a></td>
+		<td id="main_data" class="menu_td"><a href="#" onclick="haveRole(4);"><div>基本资料</div></a></td>
+		<td id="supply_data" class="menu_td"><a href="#" onclick="haveRole(0);"><div>进货管理</div></a></td>
+		<td id="sale_data" class="menu_td"><a href="#" onclick="haveRole(1);"><div>销售管理</div></a></td>
+		<td id="store_data" class="menu_td"><a href="#" onclick="haveRole(2);"><div>库存管理</div></a></td>
+		<td id="money_data" class="menu_td"><a href="#" onclick="haveRole(3);"><div>财务信息</div></a></td>
+		<td id="catalog_data" class="last_menu_td"><a href="<%= ViewData["rootUri"]%>Catalog/Index"><div>农药申请</div></a></td>
+		</tr></table>
+	</div>        
+</div>
+ <div id="content">
+       <asp:ContentPlaceHolder ID="MainContent" runat="server">
+        
+        </asp:ContentPlaceHolder>
+    </div>
+<div id="footer">
+</div>
+</center>
+</body>
+</html>

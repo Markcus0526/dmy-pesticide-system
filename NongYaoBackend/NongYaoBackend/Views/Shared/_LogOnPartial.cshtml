@@ -1,0 +1,9 @@
+﻿@if(Request.IsAuthenticated) {
+    <div class="logout_text">欢迎 <strong >@ViewBag.username</strong>!&nbsp;|&nbsp;
+        <a href="@Url.Content("~/Account/ChangePassword")">修改密码</a>&nbsp;|&nbsp;
+        [ <a href="@Url.Content("~/Account/LogOff")">退出</a> ]
+    </div>
+}
+else {
+    @:[ @Html.ActionLink("Log On", "LogOn", "Account") ]
+}

@@ -1,0 +1,745 @@
+﻿@using NongYaoBackend.Models;
+@{
+    ViewBag.Title = "农药溯源管理云平台";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>统计</title>
+                
+        <link href="@Url.Content("~/Content/plugins/select2/select2_metro.css")" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("~/Content/plugins/bootstrap-toastr/toastr.min.css")" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("~/Content/plugins/data-tables/DT_bootstrap.css")" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("~/Content/plugins/bootstrap-datepicker/css/datepicker.css")" rel="stylesheet" type="text/css"/>
+        
+        <link href="@Url.Content("~/Content/plugins/uniform/css/uniform.default.css")"   rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("~/Content/plugins/bootstrap-modal/css/bootstrap-modal-bs3patch.css")" rel="stylesheet" type="text/css"/>
+        <link href="@Url.Content("~/Content/plugins/bootstrap-modal/css/bootstrap-modal.css")" rel="stylesheet" type="text/css"/>
+        
+        <script src="@Url.Content("~/Content/plugins/jquery-1.10.2.min.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Content/plugins/jquery-migrate-1.2.1.min.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Content/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js")" type="text/javascript"></script>
+
+        <script src="@Url.Content("~/Content/plugins/data-tables/jquery.dataTables.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Content/plugins/data-tables/DT_bootstrap.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Content/plugins/bootstrap/js/bootstrap.min.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Content/plugins/bootbox/bootbox.min.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Content/plugins/bootstrap-toastr/toastr.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Content/plugins/jquery-validation/dist/jquery.validate.min.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Content/plugins/bootstrap-modal/js/bootstrap-modal.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Content/plugins/bootstrap-modal/js/bootstrap-modalmanager.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Content/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Content/plugins/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Content/scripts/app.js")" type="text/javascript"></script>
+
+    </head>
+
+    <body>
+        <div id="portlet_nong">
+                        
+            <div class="table-toolbar">
+		        <table class="table table-striped">
+                    <tr>
+                        <td style="width:50px;padding-right:0px;">
+                            <b>地区:</b>
+                        </td>
+                        <td>
+				            <select size="1" id="nongyao_region" name="nongyao_region" aria-controls="tbllist" onchange="changeNongyaoRegion();" style="width:120px;">
+                                @{
+                                if(ViewBag.role == 0)   
+                                {
+                                    <option value="0">&nbsp;&nbsp;全部</option>
+                                    List<tbl_region> region_info = ViewBag.cityregion;
+                                    for (int i = 0; i < region_info.Count; i++)
+                                    {
+                                        tbl_region item = region_info.ElementAt(i);
+                                        <option value="@item.id">&nbsp;&nbsp;@item.name</option>
+                                    }
+                                }
+                                else if (ViewBag.role == 1)
+                                {
+                                    <option value="@ViewBag.curCityId">&nbsp;&nbsp;全部</option>
+                                    List<tbl_region> region_info1 = ViewBag.curDistrictList;
+                                    for (int i = 0; i < region_info1.Count; i++)
+                                    {
+                                        tbl_region item = region_info1.ElementAt(i);
+                                        <option value="@item.id">&nbsp;&nbsp;@item.name</option>
+                                    }
+                                }
+                                else if (ViewBag.role == 2)
+                                {
+                                    <option value ="@ViewBag.curDistrictId">&nbsp;&nbsp;@ViewBag.curDistrictName</option>
+                                }
+                            }
+                                
+				            </select>    
+                        </td>
+                        <td style="width:130px;text-align:right">
+                            <b class="calendar">开始日期:</b>
+                        </td>
+                        <td style="width:230px;">
+                             <input type=text name="nongyao_start_date" class="date_input" id="nongyao_start_date" data-date-format='yyyy-mm-dd' value="@Convert.ToString(ViewBag.Year)-@String.Format("{0:00}", ViewBag.Month)-@String.Format("{0:00}", ViewBag.Day)" style="margin-right: 5px; width:100px;" onchange="nongyao_startdate_change();" />
+			            </td>
+                        <td style="width:130px;text-align:right">
+                            <b class="calendar">结束日期:</b>
+                        </td>
+                        <td style="width:230px;">
+                            <input type=text name="nongyao_end_date" class="date_input" id="nongyao_end_date" data-date-format='yyyy-mm-dd' value="@String.Format("{0:yyyy-MM-dd}",DateTime.Now)" style="margin-right: 5px; width:100px;" onchange="nongyao_enddate_change();" />
+                        </td>                        
+                        
+                    </tr>
+                    
+		        </table>
+                <table class="table table-striped">
+                    <tr>
+                        <td>
+                            <b>农药类别:</b>
+                            <select size="1" id="nongyao_type" name="nongyao_type" style="width:150px;" onchange="changeNongyaoType();">
+                                <option value="0">&nbsp;&nbsp;全部</option>
+                                @{ 
+                                    List<tbl_nongyao> nongyaos = ViewBag.nongyaos;
+                                    for (int i = 0; i < nongyaos.Count; i ++ ) {
+                                        tbl_nongyao item = nongyaos.ElementAt(i);
+	                                    <option value="@item.id">&nbsp;&nbsp;@item.name</option>
+                                    }
+                                }
+                            </select>
+                        </td>
+                        <td style="text-align:center">
+                            <b>农药通用名:</b>
+                            <input type="text" id="nongyao_pinyin" placeholder="农药通用名或拼音简码" style="vertical-align:middle;" />
+                            <input type="button" class="btn custom_button" id="search_nongyao" onclick="search_nongyao();" value="查询" style="vertical-align:middle;" />
+                            <select size="1" id="nongyao_select" name="nongyao_select" style="width: 150px; vertical-align: middle;" onchange="selectNongyao();">
+                            </select>
+                        </td>
+                   </tr>
+                </table>
+                 <table class="table table-striped">
+                    <tr>
+                        <td>
+                            <b>农药通用名查询列表:</b>                           
+                            <input type="text" id="nongyao_tongyong" placeholder="地区+农药通用名+日期区间" style="vertical-align:middle;width:350px;" />                            
+                        </td>
+                   </tr>
+                </table>
+		    </div>
+
+            <div id="table-responsive">
+                <table class="table table-striped  table-advance table-bordered table-hover" id="tbllist_nongyao">
+                    <thead>
+                        <tr>
+                            <th style="text-align:center;width:150px;">农药登记证号</th>
+                            <th style="text-align:center;">农药名称</th>
+                            <th style="text-align:center;">生产厂家</th>
+                            <th style="text-align:center;">规格</th>
+                            <th style="text-align:center;">库存总量</th>
+                            <th style="text-align:center;">销售总量</th>
+                            <th style="text-align:center;">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody> 
+                            
+                    </tbody>
+                </table>
+            </div>
+            <div id="control_button" style="text-align:right; padding-top:20px;">
+                <input type="button" id="nongyao_exl" class="btn custom_button" onclick="export_excel_nongyao();" value="导出EXL" />
+                <input type="button" id="nongyao_print" class="btn custom_button" onclick ="printNongyao();" value="打印" />
+            </div>
+        </div>
+        <div id="print_page_nongyao" style="display: none; font-size: 16px;">
+	        <p style="text-align:center;"><font style="font-size: 24px;"><b>农药统计</b></font></p><br/>
+	        <span style="float: left; margin-left: 15px;">日期:<span id="print_nongyao_date"></span></span>
+            <span style="float: right; margin-right: 15px;">打印日期:@DateTime.Now</span><br/>
+	        <table class="table_view" border="1">
+		        <thead>
+                        <tr>
+                            <th style="text-align:center;width:150px;">农药登记证号</th>
+                            <th style="text-align:center;">农药名称</th>
+                            <th style="text-align:center;">生产厂家</th>
+                            <th style="text-align:center;">规格</th>
+                            <th style="text-align:center;">库存总量</th>
+                            <th style="text-align:center;">销售总量</th>
+                            @*<th style="text-align:center;">操作</th>*@
+                        </tr>
+                    </thead>
+		        <tbody id="print_nongyao_body" style="background: white; border: 0px;">			
+		        </tbody>
+	        </table>    
+        </div>
+        <div id="DetailDialog" class="modal fade" tabindex="-1" data-width="800px" data-height="300px" data-backdrop="static">
+            <form action="#" id="submit_form" class="form-horizontal form-validate">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                        <h4 class="modal-title">详细的情报</h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <table>
+                            <tr>
+                                <td>
+                                    <b>农药详细信息列表:</b>
+                                    <input type="text" id ="print_text" placeholder ="农药名称+规格" disabled />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div id="table-responsive-detail">
+                                        <table class="table table-striped  table-advance table-bordered table-hover" id="detail_nongyao_table">
+                                            <thead>
+                                                <tr>
+                                                    <th style="text-align:center;width:100px;">生产批号</th>
+                                                    <th style="text-align:center;width:150px;">生产日期</th>
+                                                    <th style="text-align:center;width:100px;">有效期</th>
+                                                    <th style="text-align:center;width:100px;">库存数量</th>
+                                                    <th style="text-align:center;width:100px;">销售数量</th>
+                                                    <th style="text-align:center;width:100px;">合计数量</th>
+                                                    <th style="text-align:center;width:80px;">地区</th>
+                                                    <th style="text-align:center;width:100px;">经销商</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody> 
+                                                
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                        
+                        
+                    </div>
+
+                
+                    <div class="modal-hidden" style="display: none">
+                        <input type="hidden" name="id" id="del_id" value="" />
+                        <button id="real_act" class="btn white" data-target="#DetailDialog" data-toggle="modal"></button>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn custom_button" data-dismiss="modal" onclick="exportDetailNongyao();" aria-hidden="true">导出exl</button>
+                        <button class="btn custom_button" data-dismiss="modal" onclick="printDetailNongyao();">打印</button>
+                    </div>
+                </div>
+            </form>
+            <form action="@Url.Content("~/Statistics/ExportDetailNongyaoData")" method="post" id="submit_form_detail" class="form-horizontal form-validate" target="_blank">
+             </form>
+            <form action="@Url.Content("~/Statistics/ExportNongyaoData")" method="post" id="submit_form_terminal" class="form-horizontal form-validate" target="_blank">
+             </form>
+
+        </div>
+        <div id="print_page_detial_nongyao" style="display: none; font-size: 16px;">
+	        <p style="text-align:center;"><font style="font-size: 24px;"><b>农药统计</b></font></p><br/>
+            <span style="float: left; margin-right: 15px;">农药详细信息列表<span id="print_title"></span></span><br/>
+            <span style="float: right; margin-right: 15px;">打印日期:@DateTime.Now</span><br/>
+	        <table class="table_view" border="1">
+		        <thead>
+                        <tr>
+                            <th style="text-align:center;width:100px;">生产批号</th>
+                            <th style="text-align:center;width:150px;">生产日期</th>
+                            <th style="text-align:center;width:100px;">有效期</th>
+                            <th style="text-align:center;width:100px;">库存数量</th>
+                            <th style="text-align:center;width:100px;">销售数量</th>
+                            <th style="text-align:center;width:100px;">合计数量</th>
+                            <th style="text-align:center;width:80px;">地区</th>
+                            <th style="text-align:center;width:100px;">经销商</th>
+                        </tr>
+                    </thead>
+		        <tbody id="print_detail_nongyao_body" style="background: white; border: 0px;">			
+		        </tbody>
+	        </table>    
+        </div>
+        <script type="text/javascript">
+           
+
+            var oTable;
+            var handleDataTable = function () {
+                if (!jQuery().dataTable) {
+                    return;
+                }
+
+                // begin first table
+                oTable = $('#tbllist_nongyao').dataTable({
+                    "bServerSide": true,
+                    "bProcessing": true,
+                    "sAjaxSource": "@Url.Content("~/Statistics/GetNongyaoTableData")",
+                    "oLanguage": {
+                        "sUrl": "@Url.Content("~/Content/i18n/dataTables.chinese.txt")"
+                    },
+                    "aoColumns": [
+                        { "bSortable": false },
+                        { "bSortable": false },
+                        { "bSortable": false },
+                        { "bSortable": false },
+                        { "bSortable": false },
+                        { "bSortable": false },
+                        { "bSortable": false }
+                        
+                    ],
+                    "aLengthMenu": [
+                        [1, 10, 20, 50, -1],
+                        [1, 10, 20, 50, "All"] // change per page values here
+                    ],
+                    // set the initial value
+                    "iDisplayLength": 10,
+                    "bFilter": false,
+                    "bLengthChange": false,
+                    "sPaginationType": "bootstrap",
+                    "aoColumnDefs": [
+                        {
+                            aTargets: [4],    // Column number which needs to be modified
+                            sClass: 'center'    // Optional - class to be applied to this table cell
+                        },
+                        {
+                            aTargets: [5],    // Column number which needs to be modified
+                            sClass: 'center'    // Optional - class to be applied to this table cell
+                        },
+                        {
+                            aTargets: [6],    // Column number which needs to be modified
+                            fnRender: function (o, v) {   // o, v contains the object and value for the column
+                                var rhtml = "<input type='button' value='点击查看' onclick='show_detail(" + o.aData[6] + "," + o.aData[7] +  ");'/>";
+                                return rhtml;
+                            },
+                            sClass: 'center'    // Optional - class to be applied to this table cell
+                        }
+                    ]
+                });
+            }
+            var detailTable;
+            var handleDetailTable = function () {
+                if (!jQuery().dataTable) {
+                    return;
+                }
+                // begin first table
+                detailTable = $('#detail_nongyao_table').dataTable({
+                    "bServerSide": true,
+                    "bProcessing": true,
+                    "sAjaxSource": "@Url.Content("~/Statistics/GetDetailNongyaoTableData")",
+                            "oLanguage": {
+                                "sUrl": "@Url.Content("~/Content/i18n/dataTables.chinese.txt")"
+                            },
+                    "aoColumns": [
+                        { "bSortable": false },
+                        { "bSortable": false },
+                        { "bSortable": false },
+                        { "bSortable": false },
+                        { "bSortable": false },
+                        { "bSortable": false },
+                        { "bSortable": false },
+                        { "bSortable": false }
+
+                    ],
+                    "aLengthMenu": [
+                        [1, 10, 20, 50, -1],
+                        [1, 10, 20, 50, "All"] // change per page values here
+                    ],
+                    // set the initial value
+                    "iDisplayLength": 10,
+                    "bFilter": false,
+                    "bLengthChange": false,
+                    "sPaginationType": "bootstrap",
+                    "aoColumnDefs": [
+                    ]
+                });
+            }
+            function show_detail(catalog_id, standard_id) {
+                $.ajax({
+                    url: "@Url.Content("~/Statistics/changeDetailNongyaoId/")",
+                    data: {
+                        catalog_id: catalog_id,
+                        standard_id: standard_id
+                    },
+                    success: function (data) {
+                        var print_text = data.printtext;
+                        $("#print_text").val(print_text);
+                        refreshDetailTable();
+                        $("#real_act").click();
+                    }
+                });
+
+                //$("#real_act").trigger("click");
+                
+            }
+
+            function changeNongyaoRegion() {
+                
+                var region_text = "";
+                var i = 0;
+                $("#nongyao_region").children().each(function () {
+                    if ($("#nongyao_region").children().eq(i).val() == $("#nongyao_region").val())
+                        region_text = $("#nongyao_region").children().eq(i).text();                    
+                    i++;
+                });
+
+                var nongyao_pinyin = "";
+                if ($("#nongyao_pinyin").val().length == 0)
+                    nongyao_pinyin = "全部";
+                else {
+
+                }
+
+
+                $("#nongyao_tongyong").attr("value", region_text + " 全部 " + $("#nongyao_start_date").val().replace("-", "/").replace("-", "/") + "-" + $("#nongyao_end_date").val().replace("-", "/").replace("-", "/"));
+                $.ajax({
+                    url: "@Url.Content("~/Statistics/changeNongyaoRegion/")",
+                    data: {
+                        regionid: $("#nongyao_region").val()
+                    },
+                    success: function (data) {
+                        $("#nongyao_type").val(0);
+                        $("#nongyao_pinyin").val("");
+                        $("#nongyao_select").html("");
+                        refreshTable();
+                    }
+                });
+            }
+
+            function changeNongyaoType() {
+                $.ajax({
+                    url: "@Url.Content("~/Statistics/changeNongyaoType/")",
+                    data: {
+                        typeid: $("#nongyao_type").val()
+                    },
+                    success: function (data) {
+                        $("#nongyao_pinyin").val("");
+                        $("#nongyao_select").html("");
+                        refreshTable();
+                    }
+                });
+            }
+            function nongyao_startdate_change() {
+                if ($("#nongyao_start_date").val() > $("#nongyao_end_date").val()) {
+                    toastr.options = {
+                        "closeButton": false,
+                        "debug": true,
+                        "positionClass": "toast-top-center",
+                        "onclick": null,
+                        "showDuration": "3",
+                        "hideDuration": "3",
+                        "timeOut": "2500",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    };
+                    toastr["error"]("日期错误，开始日期要提前结束日期", "温馨敬告");
+
+                }
+                
+                $.ajax({
+                    url: "@Url.Content("~/Statistics/nongyaoStartDateChange/")",
+                    data: {
+                    startDate: $("#nongyao_start_date").val()
+                    },
+                    success: function (data) {
+                        var i = 0;
+                        var nongyao_pinyin = "";
+                        $("#nongyao_select").children().each(function () {
+                            if ($("#nongyao_select").children().eq(i).val() == $("#nongyao_select").val())
+                                nongyao_pinyin = $("#nongyao_select").children().eq(i).text();
+                            i++;
+                        });
+                        var region_text = "";
+                        i = 0;
+                        $("#nongyao_region").children().each(function () {
+                            if ($("#nongyao_region").children().eq(i).val() == $("#nongyao_region").val())
+                                region_text = $("#nongyao_region").children().eq(i).text();
+                            i++;
+                        });
+
+
+                        $("#nongyao_tongyong").attr("value", region_text + " " + nongyao_pinyin + " " + $("#nongyao_start_date").val().replace("-", "/").replace("-", "/") + "-" + $("#nongyao_end_date").val().replace("-", "/").replace("-", "/"));
+                        refreshTable();
+                    }
+                });
+                
+                
+            }
+            function nongyao_enddate_change() {
+                if ($("#nongyao_start_date").val() > $("#nongyao_end_date").val()) {
+                    toastr.options = {
+                        "closeButton": false,
+                        "debug": true,
+                        "positionClass": "toast-top-center",
+                        "onclick": null,
+                        "showDuration": "3",
+                        "hideDuration": "3",
+                        "timeOut": "2500",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    };
+                    toastr["error"]("日期错误，开始日期要提前结束日期", "温馨敬告");
+                }
+                
+                $.ajax({
+                    url: "@Url.Content("~/Statistics/nongyaoEndDateChange/")",
+                    data: {
+                    endDate: $("#nongyao_end_date").val()
+                    },
+                    success: function (data) {
+                        var i = 0;
+                        var nongyao_pinyin = "";
+                        $("#nongyao_select").children().each(function () {
+                            if ($("#nongyao_select").children().eq(i).val() == $("#nongyao_select").val())
+                                nongyao_pinyin = $("#nongyao_select").children().eq(i).text();
+                            i++;
+                        });
+                        var region_text = "";
+                        i = 0;
+                        $("#nongyao_region").children().each(function () {
+                            if ($("#nongyao_region").children().eq(i).val() == $("#nongyao_region").val())
+                                region_text = $("#nongyao_region").children().eq(i).text();
+                            i++;
+                        });
+
+                        $("#nongyao_tongyong").attr("value", region_text + " " + nongyao_pinyin + " " + $("#nongyao_start_date").val().replace("-", "/").replace("-", "/") + "-" + $("#nongyao_end_date").val().replace("-", "/").replace("-", "/"));
+
+                        refreshTable();
+                    }
+                });
+                
+            }
+
+            function search_nongyao() {
+                if ($("#nongyao_pinyin").val() == "") {
+                    $("#nongyao_select").html("");
+                    changeNongyaoType();
+                }
+                else {
+                    $.ajax({
+                        url: "@Url.Content("~/Statistics/searchNongyao/")",
+                        data: {
+                            basepinyin: $("#nongyao_pinyin").val()
+                        },
+                        success: function (data) {
+                            var nongyao = data.nongyaolist;
+                            var html = "";
+                            for (var i = 0; i < nongyao.length; i++) {
+                                html += "<option value=\"" + nongyao[i].uid + "\">&nbsp;&nbsp;" + nongyao[i].name + "</option>";
+                            }
+                            $("#nongyao_select").html(html);
+                            selectNongyao();
+                        }
+                    });
+                }
+            }
+
+            function selectNongyao() {
+                $.ajax({
+                    url: "@Url.Content("~/Statistics/changeNongyao/")",
+                    data: {
+                        shopid: $("#nongyao_select").val()
+                    },
+                    success: function (data) {
+                        var i = 0;
+                        var nongyao_pinyin = "";
+                        $("#nongyao_select").children().each(function () {
+                            if ($("#nongyao_select").children().eq(i).val() == $("#nongyao_select").val())
+                                nongyao_pinyin = $("#nongyao_select").children().eq(i).text();
+                            i++;
+                        });
+                        var region_text = "";
+                        i = 0;
+                        $("#nongyao_region").children().each(function () {
+                            if ($("#nongyao_region").children().eq(i).val() == $("#nongyao_region").val())
+                                region_text = $("#nongyao_region").children().eq(i).text();
+                            i++;
+                        });                     
+                        
+
+                        $("#nongyao_tongyong").attr("value", region_text + " " + nongyao_pinyin + " " + $("#nongyao_start_date").val().replace("-", "/").replace("-", "/") + "-" + $("#nongyao_end_date").val().replace("-", "/").replace("-", "/"));
+                        refreshTable();
+                    }
+                });
+            }
+
+            function refreshTable() {
+                oSettings = oTable.fnSettings();
+
+                //Retrieve the new data with $.getJSON. You could use it ajax too
+                $.getJSON(oSettings.sAjaxSource, null, function (json) {
+                    oTable.fnClearTable(this);
+
+                    for (var i = 0; i < json.aaData.length; i++) {
+                        oTable.oApi._fnAddData(oSettings, json.aaData[i]);
+                    }
+
+                    oSettings.aiDisplay = oSettings.aiDisplayMaster.slice();
+                    oTable.fnDraw();
+                });
+            }
+
+            function refreshDetailTable() {
+                oSettings = detailTable.fnSettings();
+
+                //Retrieve the new data with $.getJSON. You could use it ajax too
+                $.getJSON(oSettings.sAjaxSource, null, function (json) {
+                    detailTable.fnClearTable(this);
+
+                    for (var i = 0; i < json.aaData.length; i++) {
+                        detailTable.oApi._fnAddData(oSettings, json.aaData[i]);
+                    }
+
+                    oSettings.aiDisplay = oSettings.aiDisplayMaster.slice();
+                    detailTable.fnDraw();
+                });
+            }
+
+            $(document).ready(function () {
+                @*kendo.culture('zh-CN');
+                $("#nongyao_start_date").kendoDatePicker(
+                {
+                    value: new Date("@ViewBag.year", "@ViewBag.month", "@ViewBag.day"),
+                    format: "yyyy-MM-dd",
+                    change: nongyao_startdate_change
+                });
+
+                $("#nongyao_end_date").kendoDatePicker(
+                {
+                    value: new Date(),
+                    format: "yyyy-MM-dd",
+                    change: nongyao_enddate_change
+                });*@
+                $("#nongyao_start_date").datepicker({
+                    todayBtn: true
+                });
+                 $("#nongyao_end_date").datepicker({
+                     todayBtn: true
+                });
+                 handleDataTable();
+                 handleDetailTable();
+                 var end_date = "@String.Format("{0:yyyy-MM-dd}",DateTime.Now)".replace("-","/").replace("-", "/");
+
+                 $("#nongyao_tongyong").attr("value",
+                     "全部 全部 " + "@Convert.ToString(ViewBag.Year)" + "/" + "@String.Format("{0:00}", ViewBag.Month)" + "/" + "@String.Format("{0:00}", ViewBag.Day)" + "-" + end_date);
+             });
+
+            function printNongyao() {
+                if ($("#tbllist_nongyao tbody").find("tr") == null) {
+                    toastr.options = {
+                        "closeButton": false,
+                        "debug": true,
+                        "positionClass": "toast-top-center",
+                        "onclick": null,
+                        "showDuration": "3",
+                        "hideDuration": "3",
+                        "timeOut": "1500",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    };
+                    toastr["error"]("", "没有资料！");
+
+                    return;
+                }
+
+                $("#print_nongyao_date").html($("#nongyao_start_date").val() + "~" + $("#nongyao_end_date").val());
+                
+                var strHtml = ""
+                $.each($("#tbllist_nongyao tbody tr"), function () {
+                    var tds = $(this).find("td");
+                    strHtml += "<tr>";
+                    for (var i = 0; i < 6; i++)
+                        strHtml += "<td>" + $(tds[i]).html() + "</td>";
+                    strHtml += "</tr>";
+                });
+                //alert(strHtml);
+                $("#print_nongyao_body").html(strHtml);
+
+                //$("#print_nongyao_body").html($("#tbllist_nongyao tbody").html());
+
+                pageprint();
+            }
+            function beforePrint() {
+            }
+            function afterPrint() {
+                $("#header").css("display", "block");
+                $("#portlet_nong").css("display", "block");
+                $(".ui-tabs-nav").css("display", "block");
+                $(".headerback").css("display", "block");
+                $("#print_page_nongyao").css("display", "none");
+            }
+            function pageprint() {
+                window.onbeforeprint = beforePrint;
+                window.onafterprint = afterPrint;
+                $("#header").css("display", "none");
+                $("#portlet_nong").css("display", "none");
+                $(".ui-tabs-nav").css("display", "none");
+                $(".headerback").css("display", "none");
+                $("#print_page_nongyao").css("display", "block");
+                window.print();
+                $("#header").css("display", "block");
+                $("#portlet_nong").css("display", "block");
+                $(".ui-tabs-nav").css("display", "block");
+                $(".headerback").css("display", "block");
+                $("#print_page_nongyao").css("display", "none");
+            }
+            function printDetailNongyao() {
+                if ($("#detail_nongyao_table tbody").find("tr") == null) {
+                    toastr.options = {
+                        "closeButton": false,
+                        "debug": true,
+                        "positionClass": "toast-top-center",
+                        "onclick": null,
+                        "showDuration": "3",
+                        "hideDuration": "3",
+                        "timeOut": "1500",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    };
+                    toastr["error"]("", "没有资料！");
+
+                    return;
+                }
+                $("#print_title").html($("#print_text").val());
+                $("#print_detail_nongyao_body").html($("#detail_nongyao_table tbody").html());
+
+                pageprint_detail();
+            }
+            function beforePrint_detail() {
+            }
+            function afterPrint_detail() {
+                $("#header").css("display", "block");
+                $("#portlet_nong").css("display", "block");
+                $(".ui-tabs-nav").css("display", "block");
+                $(".headerback").css("display", "block");
+                $("#print_page_detial_nongyao").css("display", "none");
+            }
+            function pageprint_detail() {
+                window.onbeforeprint = beforePrint_detail;
+                window.onafterprint = afterPrint_detail;
+                $("#header").css("display", "none");
+                $("#portlet_nong").css("display", "none");
+                $(".ui-tabs-nav").css("display", "none");
+                $(".headerback").css("display", "none");
+                $("#DetailDialog").css("display", "none");
+                $("#print_page_detial_nongyao").css("display", "block");
+                window.print();
+                $("#header").css("display", "block");
+                $("#portlet_nong").css("display", "block");
+                $(".ui-tabs-nav").css("display", "block");
+                $(".headerback").css("display", "block");
+                $("#print_page_detial_nongyao").css("display", "none");
+            }
+
+            function export_excel_nongyao() {
+                $("#submit_form_terminal").submit();
+            }
+            function exportDetailNongyao() {
+                $("#submit_form_detail").submit();
+            
+            }
+        </script>
+        
+    </body>
+</html>

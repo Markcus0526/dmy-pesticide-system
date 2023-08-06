@@ -1,0 +1,1125 @@
+﻿@using NongYaoBackend.Models;
+@using NongYaoBackend.Models.Library;
+
+@{
+    ViewBag.Title = "农药溯源管理云平台";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link href="@Url.Content("~/Content/plugins/select2/select2_metro.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/plugins/bootstrap-toastr/toastr.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/plugins/data-tables/DT_bootstrap.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/plugins/bootstrap-switch/static/stylesheets/bootstrap-switch-metro.css")" rel="stylesheet" type="text/css"/>
+    <link href="@Url.Content("~/Content/plugins/bootstrap-datepicker/css/datepicker.css")" rel="stylesheet" type="text/css"/>
+    <link href="@Url.Content("~/Content/plugins/bootstrap-modal/css/bootstrap-modal-bs3patch.css")" rel="stylesheet" type="text/css"/>
+    <link href="@Url.Content("~/Content/plugins/bootstrap-modal/css/bootstrap-modal.css")" rel="stylesheet" type="text/css"/>
+
+    @*<link href="@Url.Content("~/Content/plugins/Kendo_jQuery/source/styles/kendo.common.css")" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("~/Content/plugins/Kendo_jQuery/source/styles/kendo.kendo.css")" rel="stylesheet" type="text/css" />*@
+</head>
+
+<body>
+    <div id="portlet">
+        <div class="table-toolbar">
+            <table class="table table-striped">
+                <tr>
+                    <td>
+                        <b>地区选择:&nbsp&nbsp</b>
+                        <select size="1" id="country" name="country">
+                            @{
+                                if(ViewBag.role == 0)   
+                                {
+                                    <option value="0">&nbsp;&nbsp;全部</option>
+                                    List<tbl_region> region_info = ViewBag.cityregion;
+                                    for (int i = 0; i < region_info.Count; i++)
+                                    {
+                                        tbl_region item = region_info.ElementAt(i);
+                                        <option value="@item.id">&nbsp;&nbsp;@item.name</option>
+                                    }
+                                }
+                                else if (ViewBag.role == 1)
+                                {
+                                    <option value="@ViewBag.curCityId">&nbsp;&nbsp;全部</option>
+                                    List<tbl_region> region_info1 = ViewBag.curDistrictList;
+                                    for (int i = 0; i < region_info1.Count; i++)
+                                    {
+                                        tbl_region item = region_info1.ElementAt(i);
+                                        <option value="@item.id">&nbsp;&nbsp;@item.name</option>
+                                    }
+                                }
+                                else if (ViewBag.role == 2)
+                                {
+                                    <option value ="@ViewBag.curDistrictId">&nbsp;&nbsp;@ViewBag.curDistrictName</option>
+                                }
+                            }
+                        </select>
+                    </td>
+                    <td>
+                        <b>经销商名称:&nbsp&nbsp</b><input type="text" id="search_word" name="search_word" placeholder="请输入经销商名称">
+                    </td>
+                    <td>
+                        <b>审核状态:&nbsp&nbsp</b>
+                        <select size="1" id="state" name="state">
+                            <option value="3">全部</option>
+                            <option value="1">通过</option>
+                            <option value="2">未通过</option>
+                            <option value="0">未审核</option>
+                        </select>
+                    </td>
+                    <td style="text-align: right">
+                        <button class="btn custom_button" onclick="search_start();">
+                            搜索
+                        </button>
+                        <button class="btn custom_button" onclick="clear_search();">
+                            清空条件
+                        </button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+
+        <div class="portlet-body" style="display: block;">
+            <div id="table-responsive">
+                <table class="table table-striped  table-advance table-bordered table-hover" id="tbllist">
+                    <thead>
+                        <tr>
+                            <th style="width: 85px; text-align: center;">编号</th>
+                            <th style="width: 200px; text-align: center;">经销商名称</th>
+                            <th style="text-align: center;">地区</th>
+                            <th style="text-align: center;">地址</th>
+                            <th style="width: 150px; text-align: center;">联系人</th>
+                            <th style="width: 85px; text-align: center;">是否高毒</th>
+                            <th style="width: 85px; text-align: center;">审核状态</th>
+                            <th style="width: 70px; text-align: center;">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- DIALOG PART-->
+    <div id="set_dialog" class="modal fade" tabindex="-1" data-width="620px" data-height="450px" data-backdrop="static">
+        <form action="#" id="submit_form" class="form-horizontal form-validate">
+            <!--<div class="modal-dialog" >-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title">经销商详细信息</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="consider-table">
+                                <tr>
+                                    <td class="label-td">
+                                        <b>经销商编号
+                                        </b>
+                                    </td>
+                                    <td style="width: 300px;vertical-align:top;">
+                                        <div class="form-group">
+                                            <div class="col-md-4">
+                                                <input type="text" id="uid" class="form-control" disabled />
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="label-td" style="width:200px">
+                                        <b>农药经营许可证号
+                                        </b>
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                            <div class="col-md-4">
+                                                <input type="text" name="permit_id" id="permit_id" class="form-control" disabled />
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="label-td">
+                                        <b>经销商名称
+                                        </b>
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                            <div class="col-md-4">
+                                                <input type="text" name="shop_name" id="shop_name" class="form-control" readonly/>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="label-td">
+                                        <b>名称拼音简码
+                                        </b>
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                            <div class="col-md-4">
+                                                <input type="text" name="nickname" data-required="1" id="nickname" class="form-control" />
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="label-td">
+                                        <b>地区
+                                        </b>
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                            <div class="col-md-4">
+                                                <select size="1" name="cityregion" id="cityregion" class="form-control adjust-left" onchange="changecity(0);" style="width: 150px;">
+                                                    @{
+                                                        List<tbl_region> regions = ViewBag.cityregion;
+                                                        for (int i = 0; i < regions.Count; i++)
+                                                        {
+                                                            tbl_region item = regions.ElementAt(i);
+                                                        <option value="@item.id">&nbsp;&nbsp;@item.name</option>
+                                                        }
+                                                    }
+                                                </select>
+                                                </div>
+                                            <div class="col-md-2">
+                                                </div>
+                                            <div class="col-md-4">
+                                                <select size="1" name="districtregion" id="districtregion" class="form-control adjust-left" style="width: 150px;">
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="label-td">
+                                        <b>地址
+                                        </b>
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                            <div class="col-md-4">
+                                                <input type="text" name="addr" id="addr" class="form-control" />
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="label-td">
+                                        <b>创建时间
+                                        </b>
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                            <div class="col-md-4">
+                                                <input type="text" name="regtime" id="regtime" class="form-control" disabled />
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @*<tr>
+                                    <td class="label-td">
+                                        <b>修改时间
+                                        </b>
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                            <div class="col-md-4">
+                                                <input type="text" name="changetime" class="form-control" id="changetime" value="" disabled />
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>*@
+                                <tr>
+                                    <td class="label-td">
+                                        <b>联系人
+                                        </b>
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                            <div class="col-md-4">
+                                                <input type="text" name="username" id="username" class="form-control" />
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="label-td">
+                                        <b>法人
+                                        </b>
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                            <div class="col-md-4">
+                                                <input type="text" name="faren" id="faren" class="form-control" />
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td class="label-td">
+                                        <b>手机
+                                        </b>
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                            <div class="col-md-4">
+                                                <input type="text" name="mobile_phone" id="mobile_phone" class="form-control" onkeyup="this.value=this.value.replace(/[^\d]/,'')" />
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="label-td">
+                                        <b>座机号码
+                                        </b>
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                            <div class="col-md-4">
+                                                <input type="text" name="phone" id="phone" class="form-control" onkeyup="this.value=this.value.replace(/[^\d]/,'')" />
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="label-td">
+                                        <b>QQ号码
+                                        </b>
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                            <div class="col-md-4">
+                                                <input type="text" name="qqnum" id="qqnum" class="form-control" onkeyup="this.value=this.value.replace(/[^\d]/,'')" onkeydown="this.value=this.value.replace(/[^\d]/,'')" />
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="label-td">
+                                        <b>电子邮箱
+                                        </b>
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                            <div class="col-md-4">
+                                                <input type="text" name="mailaddr" id="mailaddr" class="form-control" />
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="label-td">
+                                        <b>是否高毒
+                                        </b>
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                            <div class="col-md-4">
+                                                <div id="mark_div" class="make-switch" data-on-label="&nbsp;是&nbsp;" data-off-label="&nbsp;否&nbsp;" style="width: 110px;">
+                                                    <input type="checkbox" name="level" id="level" class="toggle" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="label-td">
+                                        <b>经销商地理位置
+                                        </b>
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                            <div class="col-md-2" style="padding-top:5px">
+                                                <b>经度:</b>
+                                            </div>
+                                            <div class="col-md-4">
+                                                
+                                                <input type="text" name="longitude" id="longitude" class="form-control" style="width:100px;"/>
+                                            </div>
+                                            <div class="col-md-2" style="padding-top:5px">
+                                                <b>纬度:
+                                                </b>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <input type="text" name="latitude" id="latitude" class="form-control" style="width:100px;"/>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="label-td">
+                                        <b>技术负责人
+                                        </b>
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                            <div class="col-md-4">
+                                                <input type="text" name="technical_manager" id="technical_manager" class="form-control" />
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="label-td">
+                                        <b>备注
+                                        </b>
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                            <div class="col-md-4">
+                                                <input type="text" name="notice" id="notice" class="form-control" />
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-hidden" style="display: none">
+                        <a id="real_act" class="btn white" data-target="#set_dialog" data-toggle="modal"></a>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    @*<button type="button" data-dismiss="modal" class="btn">通过</button>
+						<button type="button" data-dismiss="modal" class="btn">末通过</button>
+						<button type="button" class="btn red" onclick="salesman_submit();">关闭</button>*@
+
+                    <button type="button" class="btn custom_button" onclick="pass_catalog()" id="passSubmit">通过</button>
+                    <button type="button" class="btn custom_button" onclick="unpass_catalog()" id="unpassSubmit">未通过</button>
+                    <button type="button" data-dismiss="modal" class="btn custom_button" id="cancelSubmit">关闭</button>
+                </div>
+            </div>
+            <input type="hidden" name="pass" id="pass" value="1">
+            <input type="hidden" name="aid" id="aid" value="">
+            <input type="hidden" name="uid" id="uuid" />
+            <!--</div>-->
+        </form>
+    </div>
+
+    <div id="modalDelete" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="true" style="top: 120px;" data-backdrop="static">
+        <form action="#" id="submit_form_delete" class="form-horizontal form-validate">
+            <div class="modal-content">
+                <!--<div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    您确定要删除批量经销商吗?
+                </div>-->
+
+                <div class="modal-body">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    您确定要删除经销商吗?
+                </div>
+
+                <input type="hidden" name="id" id="del_id" value="" />
+
+                <div class="modal-footer">
+                    <button class="btn custom_button" data-dismiss="modal" aria-hidden="true">取消</button>
+                    <button class="btn custom_button" data-dismiss="modal" onclick="submitform_delete();">确定</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script src="@Url.Content("~/Content/plugins/Kendo_jQuery/js/jquery.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/plugins/jquery-1.10.2.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Contentplugins/jquery-migrate-1.2.1.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/plugins/bootstrap/js/bootstrap.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/plugins/bootstrap-hover-dropdown/twitter-bootstrap-hover-dropdown.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/plugins/jquery-slimscroll/jquery.slimscroll.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/plugins/jquery.blockui.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/plugins/jquery.cookie.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/plugins/uniform/jquery.uniform.min.js")" type="text/javascript"></script>
+
+    <script src="@Url.Content("~/Content/plugins/select2/select2.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/plugins/data-tables/jquery.dataTables.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/plugins/data-tables/DT_bootstrap.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/scripts/app.js")" type="text/javascript"></script>
+
+    <script src="@Url.Content("~/Content/plugins/bootbox/bootbox.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/plugins/bootstrap-toastr/toastr.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/plugins/jquery-validation/dist/jquery.validate.min.js")" type="text/javascript"></script>
+
+    <script src="@Url.Content("~/Content/plugins/chosen-bootstrap/chosen/chosen.jquery.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/plugins/bootstrap-wysihtml5/wysihtml5-0.3.0.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/plugins/bootstrap-modal/js/bootstrap-modal.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/plugins/bootstrap-modal/js/bootstrap-modalmanager.js")" type="text/javascript"></script>
+
+    <script src="@Url.Content("~/Content/plugins/bootstrap-switch/static/js/bootstrap-switch.min.js")" type="text/javascript" ></script>
+    <script src="@Url.Content("~/Content/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js")" type="text/javascript" ></script>
+    <script src="@Url.Content("~/Content/plugins/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js")" type="text/javascript" ></script>
+
+    @*<script src="@Url.Content("~/Content/plugins/Kendo_jQuery/js/jquery.js")" type="text/javascript"></script> *@
+    @*<script src="@Url.Content("~/Content/plugins/Kendo_jQuery/js/cultures/kendo.culture.zh-CN.js")" type="text/javascript"></script> 
+        <script src="@Url.Content("~/Content/plugins/Kendo_jQuery/source/js/kendo.core.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Content/plugins/Kendo_jQuery/source/js/kendo.fx.js")" type="text/javascript"></script>
+	    <script src="@Url.Content("~/Content/plugins/Kendo_jQuery/source/js/kendo.popup.js")" type="text/javascript"></script>  
+        <script src="@Url.Content("~/Content/plugins/Kendo_jQuery/source/js/kendo.calendar.js")" type="text/javascript"></script>  
+        <script src="@Url.Content("~/Content/plugins/Kendo_jQuery/js/kendo.datepicker.min.js")" type="text/javascript"></script>*@
+
+
+
+
+
+    <script>
+        var oTable;
+
+        var handleDataTable = function () {
+            if (!jQuery().dataTable) {
+                return;
+            }
+
+            // begin first table
+            oTable = $('#tbllist').dataTable({
+                "bServerSide": true,
+                "bProcessing": true,
+                "sAjaxSource": "@Url.Content("~/Salesman/RetrieveSalesman")",
+                "oLanguage": {
+                    "sUrl": "@Url.Content("~/Content/i18n/dataTables.chinese.txt")"
+	                },
+                "aoColumns": [
+                  { "bSortable": false },
+                  { "bSortable": false },
+                  { "bSortable": false },
+                  { "bSortable": false },
+                  { "bSortable": false },
+                  { "bSortable": false },
+                  { "bSortable": false }
+                ],
+                "aLengthMenu": [
+                    [1, 10, 20, 50, -1],
+                    [1, 10, 20, 50, "All"] // change per page values here
+                ],
+                // set the initial value
+                "iDisplayLength": 10,
+                "bFilter": false,
+                "bLengthChange": false,
+                "sPaginationType": "bootstrap",
+                "aoColumnDefs": [
+                    {
+                        aTargets: [1],
+                        fnRender: function (o, v) {
+                            var s = "";
+                            if (o.aData[1].length <= 13)
+                                return o.aData[1];
+                            else
+                                return o.aData[1].substring(0, 13) + "...";
+                        },
+                        sClass: 'tableCell'
+                    },
+                    {
+                        aTargets: [2],
+                        fnRender: function (o, v) {
+                            var s = "";
+                            if (o.aData[2].length <= 13)
+                                return o.aData[2];
+                            else
+                                return o.aData[1].substring(0, 13) + "...";
+                        },
+                        sClass: 'tableCell'
+                    },
+                    {
+                        aTargets: [3],
+                        fnRender: function (o, v) {
+                            var s = "";
+                            if (o.aData[2].length <= 18)
+                                return o.aData[3];
+                            else
+                                return o.aData[3].substring(0, 18) + "...";
+                        },
+                        sClass: 'tableCell'
+                    },
+                    {
+                        aTargets: [4],
+                        fnRender: function (o, v) {
+                            var s = "";
+                            if (o.aData[3].length <= 9)
+                                return o.aData[4];
+                            else
+                                return o.aData[4].substring(0, 9) + "...";
+                        },
+                        sClass: 'tableCell'
+                    },
+                    {
+                        aTargets: [5],
+                        fnRender: function (o, v) {
+                            if (parseInt(o.aData[5], 10) == 0)
+                                return '<span class="label label-sm label-default">否</span>';
+                            else
+                                return '<span class="label label-sm label-success">是</span>';
+                        },
+                        sClass: 'tableCell'
+                    },
+                    {
+                        aTargets: [6],
+                        fnRender: function (o, v) {
+                            switch (parseInt(o.aData[6], 10)) {
+                                case 1:
+                                    return '<span class="label label-sm label-success">通过</span>';
+                                case 2:
+                                    return '<span class="label label-sm label-default">未通过</span>';
+                                default:
+                                    return '<span class="label label-sm label-warning">未审核</span>';
+                            }
+                        },
+                        sClass: 'tableCell'
+                    },
+                    {
+                        aTargets: [7],    // Column number which needs to be modified
+                        fnRender: function (o, v) {   // o, v contains the object and value for the column
+                            var rhtml = "<a href='#' onclick='init_edit_dialog(" + o.aData[7] + ");'><img src='" + "../../Content/img/setting.png" + "' style='width:20px; height:20px;'/></a>&nbsp;&nbsp;" +
+                                '<a href="#modalDelete" data-toggle="modal" onclick="' +
+                                '$(\'#del_id\').val(\'' + o.aData[7] + '\');' +
+                                '">' +
+                                '<img src="../../Content/img/thresh.png" style="width:20px; height:20px;"/>' +
+                                '</a>';
+                            //"<a href='javascript:void(0);' class='btn white' onclick='return remove_row(" + o.aData[6] + ");'><img src='" + "../../Content/img/thresh.png" + "' style='width:20px; height:20px;'/></a>";
+                            return rhtml;
+                        },
+                        sClass: 'tableCell'    // Optional - class to be applied to this table cell
+                    }
+                ]
+            });
+        }
+
+
+
+        $(document).ready(function () {
+            $(".menutable").removeClass("active");
+            $("#salesman").addClass("active");
+            $("#subtitle").html("经销商备案");
+        });
+
+
+
+        jQuery(document).ready(function () {
+            // initiate layout and plugins
+            //App.init();
+            handleDataTable();
+
+            var form_addtype = $('#submit_form');
+            error = $('.alert-danger', form_addtype);
+            success = $('.alert-success', form_addtype);
+
+            $.validator.messages.required = "必须要填写";
+            $.validator.messages.remote = "请输入正确的"
+            $.validator.messages.email = "请输入Email格式"
+            $.validator.messages.url = "请输入URL格式"
+            $.validator.messages.date = "请输入日期"
+            $.validator.messages.dateISO = "请输入日期ISO"
+            $.validator.messages.number = "请输入数字"
+            $.validator.messages.digits = "请输入数字"
+            $.validator.messages.creditcard = "请输入信用卡格式"
+            $.validator.messages.equalTo = "确认密码不同"
+            $.validator.messages.maxlength = $.validator.format("输入的文字数量超过了");
+            $.validator.messages.minlength = $.validator.format("输入的文字数量太少");
+            $.validator.messages.rangelength = $.validator.format("输入的文字数量没在范围");
+            $.validator.messages.range = $.validator.format("输入的数值没在范围");
+            $.validator.messages.max = $.validator.format("输入的数值超过了");
+            $.validator.messages.min = $.validator.format("输入的数值太少");
+
+            form_addtype.validate({
+                doNotHideMessage: true, //this option enables to show the error/success messages on tab switch.
+                errorElement: 'span', //default input error message container
+                errorClass: 'help-block', // default input error message class
+                focusInvalid: false, // do not focus the last invalid input
+                rules: {
+                    nickname: {
+                        required: true,
+                        minlength: 1,
+                        maxlength: 10
+                    },
+                    addr: {
+                        required: true,
+                        minlength: 1,
+                        maxlength: 50
+                    },
+                    
+                    /*username: {
+                        required: true,
+                        minlength: 1,
+                        maxlength: 10
+                    },*/
+                    /*faren: {
+                        required: true,
+                        minlength: 1,
+                        maxlength: 30
+                    },*/
+                    longitude: {
+                        required: true,
+                        min: 73.55,
+                        max: 135.166,
+                        number:true,
+                    },
+                    latitude: {
+                        required: true,
+                        min: 3.5,
+                        max: 53.6,
+                        number: true,
+                    },
+                    mobile_phone: {
+                        required: true,
+                        number: true,
+                        maxlength: 11
+                    },
+                    phone: {
+                        required: true,
+                        number: true,
+                        maxlength: 11
+                    },
+                    /*qqnum: {
+                        required: true,
+                        number: true,
+                        minlength: 1,
+                        maxlength: 30
+                    },*/
+                    mailaddr: {
+                        required: true,
+                        email: true,
+                        minlength: 1,
+                        maxlength: 50
+                    },
+                    level: {
+                        required: true,
+                        minlength: 1,
+                        maxlength: 20
+                    }
+                    /*technical_manager: {
+                        required: true,
+                        minlength: 1,
+                        maxlength: 20
+                    },*/
+                },
+
+                errorPlacement: function (error, element) { // render error placement for each input type
+                    if (element.attr("name") == "gender") { // for uniform radio buttons, insert the after the given container
+                        error.insertAfter("#form_gender_error");
+                    } else if (element.attr("name") == "payment[]") { // for uniform radio buttons, insert the after the given container
+                        error.insertAfter("#form_payment_error");
+                    } else {
+                        error.insertAfter(element); // for other inputs, just perform default behavior
+                    }
+                },
+
+                invalidHandler: function (event, validator) { //display error alert on form submit   
+                    success.hide();
+                    error.show();
+                    App.scrollTo(error, -200);
+                },
+
+                highlight: function (element) { // hightlight error inputs
+                    $(element)
+                        .closest('.form-group').removeClass('has-success').addClass('has-error'); // set error class to the control group
+                },
+
+                unhighlight: function (element) { // revert the change done by hightlight
+                    $(element)
+                        .closest('.form-group').removeClass('has-error'); // set error class to the control group
+                },
+
+                success: function (label) {
+                    if (label.attr("for") == "gender" || label.attr("for") == "payment[]") { // for checkboxes and radio buttons, no need to show OK icon
+                        label
+                            .closest('.form-group').removeClass('has-error').addClass('has-success');
+                        label.remove(); // remove error label here
+                    } else { // display success icon for other inputs
+                        label
+                            .addClass('valid') // mark the current input as valid and display OK icon
+                        .closest('.form-group').removeClass('has-error').addClass('has-success'); // set success class to the control group
+                    }
+                },
+
+                submitHandler: function (form) {
+                    success.show();
+                    error.hide();
+                    //add here some ajax code to submit your form or just call form.submit() if you want to submit the form without ajax
+                }
+
+            });
+
+        });
+            
+        function changecity(districtregion_id) {
+            var html = "";
+            
+            var cityid = $("#cityregion").val();
+            $.ajax({
+                url: "@Url.Content("~/Salesman/GetDistrictList")",
+                data: {
+                    cityid: cityid
+                },
+                success: function (data) {
+                    var districtdata = data.districtdata;
+                    for (var i = 0; i < districtdata.length; i++) {
+                        html += "<option value=\"" + districtdata[i].id + "\">&nbsp;&nbsp;" + districtdata[i].name + "</option>";
+                    }
+                    $("#districtregion").html(html);
+                    if (districtdata.length == 0) {
+                        $("#districtregion").html("");
+                    }
+                    if (districtregion_id != 0)
+                        $("#districtregion").val(districtregion_id);
+                }
+            });
+        }
+            
+        function search_start() {
+            var country = $("#country").val();
+            var name = $("#search_word").val();
+            var state = $("#state").val();
+
+            $.ajax({
+                url: "@Url.Content("~/Salesman/FilterSalesmanTable")",
+                data: {
+                    countryid: country,
+                    searchWord: name,
+                    pass: state
+                },
+                success: function (data) {
+                    refreshTable();
+                }
+            });
+
+        }
+        function clear_search() {
+            if ("@ViewBag.role" == 2) {
+                $("#country").val("@ViewBag.curDistrictId");
+            }
+            else if("@ViewBag.role" == 1) {
+                $("#country").val("@ViewBag.curCityId");
+            }
+            else
+            {
+                $("#country").val(0);
+            }
+            $("#search_word").val("");
+            $("#state").val(3);
+            var country = $("#country").val();
+            var name = $("#search_word").val();
+            var state = $("#state").val();
+
+            $.ajax({
+                url: "@Url.Content("~/Salesman/FilterSalesmanTable")",
+                data: {
+                    countryid : country,
+                    searchWord: name,
+                    pass: state
+                },
+                success: function (data) {
+                    refreshTable();
+                }
+            });
+        }
+        function remove_row(id) {
+            $.ajax({
+                async: false,
+                type: "POST",
+                url: "@Url.Content("~/Salesman/DeleteSalesman")",
+                dataType: "json",
+                data: {
+                    id: id
+                },
+                success: function (data) {
+                    if (data == true) {
+                        toastr.options = {
+                            "closeButton": false,
+                            "debug": true,
+                            "positionClass": "toast-top-center",
+                            "onclick": null,
+                            "showDuration": "3",
+                            "hideDuration": "3",
+                            "timeOut": "1500",
+                            "extendedTimeOut": "1000",
+                            "showEasing": "swing",
+                            "hideEasing": "linear",
+                            "showMethod": "fadeIn",
+                            "hideMethod": "fadeOut"
+                        };
+                        toastr["success"]("操作成功!", "恭喜您");
+                        refreshTable();
+                    } else {
+                        toastr.options = {
+                            "closeButton": false,
+                            "debug": true,
+                            "positionClass": "toast-top-center",
+                            "onclick": null,
+                            "showDuration": "3",
+                            "hideDuration": "3",
+                            "timeOut": "1500",
+                            "extendedTimeOut": "1000",
+                            "showEasing": "swing",
+                            "hideEasing": "linear",
+                            "showMethod": "fadeIn",
+                            "hideMethod": "fadeOut"
+                        };
+                        toastr["error"](data.error, "温馨敬告");
+
+                    }
+                },
+                error: function (data) {
+                    alert("Error: " + data.status);
+                    $('.loading-btn').button('reset');
+                }
+            });
+        }
+        function refreshTable() {
+            oSettings = oTable.fnSettings();
+
+            //Retrieve the new data with $.getJSON. You could use it ajax too
+            var name = $("#search_word").val();
+            var pass = $("#state").val();
+            oSettings.sAjaxSource = "@Url.Content("~/Salesman/RetrieveSalesman")" + "?pass=" + pass + "&search=" + name;
+            $.getJSON(oSettings.sAjaxSource, null, function (json) {
+                //oTable.fnClearTable(this);
+
+                for (var i = 0; i < json.aaData.length; i++) {
+                    oTable.oApi._fnAddData(oSettings, json.aaData[i]);
+                }
+
+                oSettings.aiDisplay = oSettings.aiDisplayMaster.slice();
+                oTable.fnDraw();
+            });
+        }
+
+        function redirectToListPage(status) {
+            if (status.indexOf("error") != -1) {
+            } else {
+                refreshTable();
+            }
+        }
+
+        function init_edit_dialog(id) {
+            $(".has-error").removeClass("has-error");
+            $(".has-success").removeClass("has-success");
+            $(".help-block").remove();
+            
+            $.ajax({
+                type: "GET",
+                url: "@Url.Content("~/Salesman/RetrieveSalesmanInfo/")" + id,
+                dataType: 'json',
+                data: {},
+                success: function (data) {
+                    var result = data.salesmandata;
+                    if (result.uid == "未定")
+                        uid = getUid(result.id);
+                    else
+                        uid = result.uid;
+                    
+                    $("#uid").attr('value', uid);
+                    $("#uuid").attr('value', uid);
+                    $("#aid").val(result.id);
+                    $("#permit_id").attr('value', result.permit_id);
+                    $("#shop_name").val(result.name);
+                    $("#nickname").val(result.nickname);
+                    $("#cityregion").val(result.cityregion);
+                    changecity(result.districtregion);
+                    //$("#districtregion").val(result.districtregion); this value set in changecity function
+                    $("#addr").val(result.addr);
+                    $("#regtime").val(result.regtime);
+                    
+                    $("#username").val(result.username);
+                    $("#faren").val(result.faren);
+                    $("#mobile_phone").val(result.mobile_phone);
+                    $("#phone").val(result.phone);
+                    $("#qqnum").val(result.qqnum);
+                    $("#mailaddr").val(result.mailaddr);
+                    $("#longitude").val(result.longitude);
+                    $("#latitude").val(result.latitude);
+                    $("#pass").val(result.pass);
+
+                    if (parseInt(result.level, 10) == 0) {
+                        if ($('#mark_div').bootstrapSwitch('status') == true) {
+                            $('#level').trigger("click");
+                        }
+                    }
+                    else
+                        if ($('#mark_div').bootstrapSwitch('status') == false)
+                            $('#level').trigger("click");
+
+                    $("#technical_manager").val(result.technical_manager);
+                    $("#notice").val(result.notice);
+
+                    if (parseInt($("#pass").val(), 10) == 0) {
+                        $("#set_dialog #passSubmit").show();
+                        $("#set_dialog #unpassSubmit").show();
+                        checkRole(result.region);
+                    } else {
+                        $("#set_dialog #passSubmit").hide();
+                        $("#set_dialog #unpassSubmit").hide();
+                    }
+                    //alert(result.districtregion);
+                    
+                    $("#real_act").trigger("click");
+                }
+            });
+
+        }
+        function checkRole(region_id) {
+            $.ajax({
+                url: "@Url.Content("~/Salesman/CheckRole")",
+                data: {
+                    region_id:region_id
+                },
+                type: "get",
+                success: function (data) {
+                    var roledata = data.roledata;
+                    if (roledata == true) {
+                        $("#set_dialog #passSubmit").show();
+                        $("#set_dialog #unpassSubmit").show();
+                    } else {
+                        $("#set_dialog #passSubmit").hide();
+                        $("#set_dialog #unpassSubmit").hide();
+                    }
+                }
+            });
+        }
+
+        function getUid(id) {
+            var retstr = "J";
+            var len = 6 - ("" + id).length;
+            for (var i = 0; i < len; i++)
+                retstr += "0";
+            retstr += id;
+
+            return retstr;
+        }
+
+        function pass_catalog() {
+            $("#pass").val(1);
+            salesman_submit()
+        }
+
+        function unpass_catalog() {
+            $("#pass").val(2);
+            if ($("#technical_manager").val().length == 0)
+                $("#technical_manager").val("-");
+            if ($("#faren").val().length == 0)
+                $("#faren").val("-");
+            salesman_submit()
+        }
+        function salesman_submit() {
+            if ($('#submit_form').valid()) {
+                if ($("#pass").val() == 2) {
+                    if ($("#technical_manager").val() == "-")
+                        $("#technical_manager").val("");
+                    if ($("#faren").val() == "-")
+                        $("#faren").val("");
+                }
+
+                
+                $.ajax({
+                    async: false,
+                    type: "POST",
+                    url: "@Url.Content("~/Salesman/SubmitSalesman")",
+                    dataType: "json",
+                    data: $('#submit_form').serialize(),
+                    success: function (data) {
+                        if (data == true) {
+                            toastr.options = {
+                                "closeButton": false,
+                                "debug": true,
+                                "positionClass": "toast-top-center",
+                                "onclick": null,
+                                "showDuration": "3",
+                                "hideDuration": "3",
+                                "timeOut": "1500",
+                                "extendedTimeOut": "1000",
+                                "showEasing": "swing",
+                                "hideEasing": "linear",
+                                "showMethod": "fadeIn",
+                                "hideMethod": "fadeOut"
+                            };
+                            toastr["success"]("操作成功!", "恭喜您");
+                            refreshTable();
+                            //window.location = "@Url.Content("~/Salesman/ConsiderSalesman")";
+                        } else {
+                            toastr.options = {
+                                "closeButton": false,
+                                "debug": true,
+                                "positionClass": "toast-top-center",
+                                "onclick": null,
+                                "showDuration": "3",
+                                "hideDuration": "3",
+                                "timeOut": "1500",
+                                "extendedTimeOut": "1000",
+                                "showEasing": "swing",
+                                "hideEasing": "linear",
+                                "showMethod": "fadeIn",
+                                "hideMethod": "fadeOut"
+                            };
+                            toastr["error"](data.error, "温馨敬告");
+
+                        }
+                    },
+                    error: function (data) {
+                        alert("Error: " + data.status);
+                        $('.loading-btn').button('reset');
+                    }
+                });
+                $("#cancelSubmit").trigger("click");
+            }
+        }
+
+        function submitform_delete() {
+            $.ajax({
+                async: false,
+                type: "POST",
+                url: "@Url.Content("~/Salesman/DeleteSalesman")",
+                dataType: "json",
+                data: $('#submit_form_delete').serialize(),
+                success: function (data) {
+                    if (data == true) {
+                        toastr.options = {
+                            "closeButton": false,
+                            "debug": true,
+                            "positionClass": "toast-top-center",
+                            "onclick": null,
+                            "showDuration": "3",
+                            "hideDuration": "3",
+                            "timeOut": "1500",
+                            "extendedTimeOut": "1000",
+                            "showEasing": "swing",
+                            "hideEasing": "linear",
+                            "showMethod": "fadeIn",
+                            "hideMethod": "fadeOut"
+                        };
+                        toastr["success"]("删除成功!", "恭喜您");
+                    } else {
+                        toastr.options = {
+                            "closeButton": false,
+                            "debug": true,
+                            "positionClass": "toast-top-center",
+                            "onclick": null,
+                            "showDuration": "3",
+                            "hideDuration": "3",
+                            "timeOut": "1500",
+                            "extendedTimeOut": "1000",
+                            "showEasing": "swing",
+                            "hideEasing": "linear",
+                            "showMethod": "fadeIn",
+                            "hideMethod": "fadeOut"
+                        };
+                        toastr["error"](data.error, "温馨敬告");
+
+                    }
+                },
+                error: function (data) {
+                    alert("Error: " + data.status);
+                    $('.loading-btn').button('reset');
+                }
+            });
+        }
+
+    </script>
+    <!-- END JAVASCRIPTS -->
+
+</body>
+</html>

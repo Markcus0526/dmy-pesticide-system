@@ -1,0 +1,58 @@
+﻿@using NongYaoBackend.Models;
+@using NongYaoBackend.Models.Library;
+@{
+    ViewBag.Title = "统计";
+}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>abc</title>
+        <link href="@Url.Content("~/Content/css/themes/base/jquery.ui.all.css")" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=B9c5b113ec6dcbccb4540870728af498"></script>
+    </head>
+    <body>
+        
+        <div id="tabs">
+            <ul>
+                <li><a href="@Url.Content("~/Statistics/Shop")" >经销商统计</a></li>
+                <li><a href="@Url.Content("~/Statistics/Nongyao")" >农药统计</a></li>
+                <li><a href="@Url.Content("~/Statistics/Statistics")" >决策分析</a></li>
+            </ul>
+
+            <div id="tabs-1">
+            
+            </div>
+            <div id="tabs-2">
+            
+            </div>
+            <div id="tabs-3">
+            
+            </div>
+        </div>
+        
+        <script src="@Url.Content("~/Content/js/jquery-1.7.1.min.js")"></script>
+        
+        <script src="@Url.Content("~/Content/js/ui/jquery.ui.core.js")"></script>
+        <script src="@Url.Content("~/Content/js/ui/jquery.ui.widget.js")"></script>
+        <script src="@Url.Content("~/Content/js/ui/jquery.ui.tabs.js")"></script>
+
+        <script type="text/javascript">
+        
+	        $(function () {
+	            $(".menutable").removeClass("active");
+	            $("#statistics").addClass("active");
+	            $(".subheaderback").hide();
+	            $("#tabs").tabs({
+	                ajaxOptions: {
+	                    error: function (xhr, status, index, anchor) {
+	                        $(anchor.hash).html("对不起，内部错误.");
+	                    }
+	                }
+	            });
+	        
+	        });
+	    
+        </script>
+    </body>
+    
+</html>

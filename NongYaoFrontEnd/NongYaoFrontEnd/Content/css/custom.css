@@ -1,0 +1,171 @@
+/* here you can put your own css to customize and override the theme */
+
+.login-back {
+    width:735px;
+    background-image: url(/Content/img/login_back.png);
+    background-repeat:no-repeat;
+}
+
+.login-table {
+	width:680px;
+	text-align:center;
+}
+
+.alert-radius {
+	border-radius:10px;
+}
+
+.login-input-table {
+	width:100%;
+}
+
+.login-input-table td{
+	vertical-align:middle;
+	height:50px;
+	padding:0px 20px 0px 20px;
+}
+
+.input-icon .login-i {
+	margin:1px 1px 1px 1px !important;
+	height:36px !important;
+}
+.userback {
+	width:71px !important;
+	background-image:url(/Content/img/input_user.png);
+}
+.passback {
+	width:71px !important;
+	background-image:url(/Content/img/input_password.png);
+}
+.validback {
+	width:35px !important;
+	background-image:url(/Content/img/input_valid.png);
+}
+
+.input-icon .login-input {
+	width:300px;
+	height:38px;
+	padding-left:76px !important;
+	border-radius:5px !important;
+    border-color:black;
+}
+.input-icon .login-valid {
+	width:150px;
+	padding-left:39px !important;
+}
+
+.form-group .register-button {
+	width:94px;
+	height:39px;
+	color:white;
+	font-size:20px;
+	background-image:url(/Content/img/btn_register.png);
+}
+.form-group .loginbtnback {
+	background-image:url(/Content/img/btn_login.png);	
+}
+
+.form-group .captcha-button{
+	width:65px;
+	height:39px;
+	color:black;
+	border-radius:5px !important;
+    border-color:black;
+	background-image:url(/Content/img/btn_captcha.png);	
+}
+
+input[type='text'] {
+	padding-top:5px;
+}
+
+input[type='password'] {
+	padding-top:5px;
+}
+
+textarea {
+	padding-left:3px;
+}
+
+select {
+	padding-left:3px;
+}
+
+.adjust-left {
+	padding-left:3px;
+}
+
+.headerback
+{
+    width:1024px;
+    height:169px;
+    background-image: url('../img/header_back.png');
+    
+}
+
+.headerback td
+{
+    vertical-align: bottom;
+    padding-left: 0px;
+    padding-bottom: 0px;
+    margin: 0;
+}
+
+.subheaderback
+{
+    width:1024px;
+    height:52px;
+    background-image: url('../img/subtitle_back.png');
+}
+
+.subheaderback h4
+{
+    color:#fff;
+}
+
+.menutable
+{
+    width: 630px;
+    height: 37px;
+}
+
+.menutable td
+{
+    width:105px;
+    background-image:url('../img/tab_back.png');
+    text-align:center;
+    padding: 0;
+}
+
+.menutable td:hover
+{
+    background-image:url('../img/tab_backsel.png');
+    text-align:center;
+}
+
+.menutable td:active
+{
+    background-image:url('../img/tab_backsel.png');
+    text-align:center;
+}
+
+.menutable a {
+    text-align:center;
+    font-weight: bold;
+    text-decoration: none;
+    text-shadow: 3px 3px 2px #fff;
+    line-height: 2.8em;
+    color: #ffffff;
+}
+
+.menutable a:hover {
+    text-decoration: none;
+    color:white;
+}
+
+.menutable a:active {
+    text-decoration: none;
+}
+
+.table td {
+    text-align:left;
+}
