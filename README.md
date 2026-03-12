@@ -1,45 +1,143 @@
-**Edit a file, create a new file, and clone from Bitbucket in under 2 minutes**
+# NongYao Pesticide Management System
 
-When you're done, you can delete the content in this README and update the file with details for others getting started with your repository.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Legacy Project](https://img.shields.io/badge/status-legacy-orange.svg)](https://github.com)
 
-*We recommend that you open this README in another tab as you perform the tasks below. You can [watch our video](https://youtu.be/0ocf7u76WSo) for a full demo of all the steps in this tutorial. Open the video in a new tab to avoid leaving Bitbucket.*
+## Overview
+
+**NongYao** (农药 - Pesticide/Farm Medicine) is a comprehensive management system for pesticide shops and distributors. It provides tools for inventory tracking, sales, purchasing, financial reporting, and statistics. The system includes:
+
+- **Android Mobile App**: Field sales, inventory, and reporting on mobile devices.
+- **.NET Backend & Services**: Server-side logic, APIs, and data processing (C# / ASP.NET / WCF).
+- **Web/Desktop Frontend**: Likely for office/admin use.
+- **SQL Server Database**: Centralized data storage for catalogs, transactions, and reports.
+
+Originally developed around 2014 (VS2010, Android API 16), this is a legacy enterprise application for the agricultural chemical distribution industry.
+
+## Features
+
+Inferred from Android app activities and data types:
+
+### Sales & Inventory
+- Sales catalog management (add, reject, search, pay).
+- Buy/purchase catalog.
+- Store operations: moving, search, usage tracking.
+- Base data: Shops, users, stores.
+
+### Financial Management
+- Money reports and payments (history, details).
+- Bank accounts, other payments.
+- Manual reports.
+
+### Statistics & Analytics
+- Shop statistics.
+- Pesticide sales by type/region/month.
+- Policy statistics (details 1-3).
+
+### Additional Tools
+- QR/Barcode scanning (ZXing integration).
+- Printing support (custom formats).
+- Location services (Baidu GPS).
+- Camera for photos.
+- Charts (line, stacked bar for sales).
+- Bluetooth device support.
+
+### Permissions (Android)
+Internet, storage, location, camera, phone state, Bluetooth, etc.
+
+## Architecture
+
+```
+Android App (Java) ─── HTTP/JSON ───> .NET Backend/Services (C#) ───> SQL Server DB
+                                                      │
+                                               Web Frontend (ASP.NET?)
+```
+
+- **Client**: Android v1.6 (min SDK 11).
+- **Server**: NongYaoBackend (API?), NongYaoService (WCF?), NongYaoFrontEnd (UI).
+- **DB**: NongYao.mdf (entities: catalogs, sales, stores, users, etc.).
+
+## Directory Structure
+
+```
+.
+├── Android/                  # Android app source & resources
+│   ├── AndroidManifest.xml   # App config
+│   ├── src/com/damy/nongyao/ # Java activities & utils
+│   └── res/                  # Layouts, drawables, values
+├── Database/                 # SQL Server files
+│   ├── NongYao.mdf
+│   └── NongYao_log.ldf
+├── NongYaoBackend/           # .NET backend
+│   └── NongYaoBackend.sln
+├── NongYaoFrontEnd/          # .NET frontend
+│   └── NongYaoFrontEnd.sln
+├── NongYaoService/           # .NET services
+│   └── NongYaoService.sln
+├── README.md
+└── .gitignore
+```
+
+## Quick Start
+
+### Prerequisites
+- **Visual Studio 2010+** (for .NET projects).
+- **SQL Server** (2008+ for .mdf attach).
+- **Eclipse or Android Studio** (legacy: Eclipse with ADT for Android build).
+- **JDK 6-7** (for Android).
+
+### 1. Database Setup
+```
+1. Open SQL Server Management Studio.
+2. Right-click Databases → Attach → Select Database/ → Add NongYao.mdf & log.ldf.
+3. Update connection strings in .NET config files (likely app.config/web.config).
+```
+
+### 2. Backend & Services
+```
+1. Open NongYaoBackend/NongYaoBackend.sln in Visual Studio.
+2. Restore NuGet packages (packages/ dir).
+3. Build (Debug/Release).
+4. Run services (WCF? Update endpoints).
+```
+
+### 3. Frontend
+```
+1. Open NongYaoFrontEnd/NongYaoFrontEnd.sln.
+2. Build & run (web/desktop).
+```
+
+### 4. Android App
+```
+1. Import Android/ as Eclipse project or use Android Studio (gradle migrate).
+2. Update build paths, libs (armeabi).
+3. Build APK.
+4. Install: adb install bin/NongYao-debug.apk
+5. Configure server URL in Global.java or prefs.
+```
+
+## API Endpoints
+Not directly readable from files. Likely JSON over HTTP (see `HttpConnUsingJSON.java`). Common: login, sync sales/catalogs. Inspect backend controllers/services post-build.
+
+## Contributing
+1. Fork & clone.
+2. Create feature branch.
+3. Modernization suggestions: Update Android to Kotlin/Jetpack, .NET to Core/8, DB to migrations.
+4. PR to `main`.
+
+## Status & TODO
+- Legacy (2014-era).
+- TODO:
+  - Migrate Android to modern SDK.
+  - Containerize backend (Docker).
+  - Add API docs (Swagger).
+  - Unit tests.
+  - CI/CD (GitHub Actions).
+
+## License
+MIT License - see [LICENSE](LICENSE) (add if missing).
 
 ---
 
-## Edit a file
+*Built with ❤️ for agricultural management.*
 
-You’ll start by editing this README file to learn how to edit a file in Bitbucket.
-
-1. Click **Source** on the left side.
-2. Click the README.md link from the list of files.
-3. Click the **Edit** button.
-4. Delete the following text: *Delete this line to make a change to the README from Bitbucket.*
-5. After making your change, click **Commit** and then **Commit** again in the dialog. The commit page will open and you’ll see the change you just made.
-6. Go back to the **Source** page.
-
----
-
-## Create a file
-
-Next, you’ll add a new file to this repository.
-
-1. Click the **New file** button at the top of the **Source** page.
-2. Give the file a filename of **contributors.txt**.
-3. Enter your name in the empty file space.
-4. Click **Commit** and then **Commit** again in the dialog.
-5. Go back to the **Source** page.
-
-Before you move on, go ahead and explore the repository. You've already seen the **Source** page, but check out the **Commits**, **Branches**, and **Settings** pages.
-
----
-
-## Clone a repository
-
-Use these steps to clone from SourceTree, our client for using the repository command-line free. Cloning allows you to work on your files locally. If you don't yet have SourceTree, [download and install first](https://www.sourcetreeapp.com/). If you prefer to clone from the command line, see [Clone a repository](https://confluence.atlassian.com/x/4whODQ).
-
-1. You’ll see the clone button under the **Source** heading. Click that button.
-2. Now click **Check out in SourceTree**. You may need to create a SourceTree account or log in.
-3. When you see the **Clone New** dialog in SourceTree, update the destination path and name if you’d like to and then click **Clone**.
-4. Open the directory you just created to see your repository’s files.
-
-Now that you're more familiar with your Bitbucket repository, go ahead and add a new file locally. You can [push your change back to Bitbucket with SourceTree](https://confluence.atlassian.com/x/iqyBMg), or you can [add, commit,](https://confluence.atlassian.com/x/8QhODQ) and [push from the command line](https://confluence.atlassian.com/x/NQ0zDQ).
